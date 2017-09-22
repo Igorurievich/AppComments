@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Comments.Web", "NetCoreChat\App.Comments.Web.csproj", "{B6073CFD-D37F-4DAD-B5D2-466A9897FAB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Comments.Common", "App.Comments.Common\App.Comments.Common.csproj", "{818508EC-E110-4124-AF95-0459284220E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Comments.Data", "App.Comments.Data\App.Comments.Data.csproj", "{CD292DCD-BE67-4863-8748-A7B4FAFB3643}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{B6073CFD-D37F-4DAD-B5D2-466A9897FAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6073CFD-D37F-4DAD-B5D2-466A9897FAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6073CFD-D37F-4DAD-B5D2-466A9897FAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{818508EC-E110-4124-AF95-0459284220E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{818508EC-E110-4124-AF95-0459284220E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{818508EC-E110-4124-AF95-0459284220E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{818508EC-E110-4124-AF95-0459284220E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD292DCD-BE67-4863-8748-A7B4FAFB3643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD292DCD-BE67-4863-8748-A7B4FAFB3643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD292DCD-BE67-4863-8748-A7B4FAFB3643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD292DCD-BE67-4863-8748-A7B4FAFB3643}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
