@@ -25,4 +25,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\App.Comments.Common\App.Comments.Common.csproj" />
+    <ProjectReference Include="..\App.Comments.Data\App.Comments.Data.csproj" />
+  </ItemGroup>
+
 </Project>

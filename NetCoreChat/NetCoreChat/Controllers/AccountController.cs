@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using NetCoreChat.Models;
 using NetCoreChat.Models.AccountViewModels;
 using NetCoreChat.Services;
+using App.Comments.Common.Entities;
 
 namespace NetCoreChat.Controllers
 {

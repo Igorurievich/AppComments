@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Comments.Common.Entities
 {
     public class Comment
     {
-        public Comment(string title, string description)
-        {
-            Title = title;
-            Description = description;
-        }
+        public int Id { get; set; }
 
-        public string Title { get; private set; }
+        public string Title { get; set; }
 
-        public string Description { get; private set; }
+        public string Description { get; set; }
+
+        public ApplicationUser Autor { get; set; }
+
+        public short AutorId { get; set; }
+
+        public DateTime PostTime { get; set; }
     }
 }
