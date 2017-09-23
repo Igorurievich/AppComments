@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-NetCoreChat-97A9B4ED-2A16-4E2B-9DCC-D763D4D7CF81</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AngularJS.Core" Version="1.6.5" />

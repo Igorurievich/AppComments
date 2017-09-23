@@ -36,7 +36,7 @@ namespace NetCoreChat
             services.AddMvc();
 
             services.AddDbContext<CommentsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("App.Comments.Data")));
 
         }
 

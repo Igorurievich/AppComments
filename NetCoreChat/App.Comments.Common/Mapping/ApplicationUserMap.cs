@@ -11,10 +11,10 @@ namespace App.Comments.Common.Mapping
             builder.ToTable("Users");
 
             builder.HasKey(k => k.Id);
-            builder.Property(c => c.UserName).HasColumnType("varchar").HasMaxLength(50).IsRequired();
-            builder.Property(c => c.PasswordHash).HasColumnType("varchar").HasMaxLength(50).IsRequired();
-            builder.Property(c => c.Email).HasColumnType("varchar").HasMaxLength(50).IsRequired();
-            builder.Property(c => c.UserPhoto).HasColumnType("varbinary").HasMaxLength(10000);
+            builder.Property(c => c.UserName).HasMaxLength(50).IsRequired();
+            builder.Property(c => c.PasswordHash).HasMaxLength(50).IsRequired();
+            builder.Property(c => c.Email).HasMaxLength(50).IsRequired();
+            builder.Property(c => c.UserPhoto).HasMaxLength(10000);
 
             builder.HasMany(typeof(Comment), "Comments");
         }

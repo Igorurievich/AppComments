@@ -11,8 +11,8 @@ namespace App.Comments.Common.Mapping
             builder.ToTable("Comments");
 
             builder.HasKey(k => k.Id);
-            builder.Property(c => c.Title).HasColumnType("varchar").HasMaxLength(50).IsRequired();
-            builder.Property(c => c.Description).HasColumnType("varchar").HasMaxLength(300).IsRequired();
+            builder.Property(c => c.Title).HasMaxLength(50).IsRequired();
+            builder.Property(c => c.Description).HasMaxLength(300).IsRequired();
 
             builder.HasOne<ApplicationUser>(u => u.Autor).WithMany(c => c.Comments);
         }
