@@ -5,7 +5,7 @@ namespace App.Comments.Common.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public List<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         public byte[] UserPhoto { get; set; }
     }

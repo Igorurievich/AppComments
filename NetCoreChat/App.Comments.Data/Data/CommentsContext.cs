@@ -1,25 +1,31 @@
 ﻿using App.Comments.Common.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using App.Comments.Common.Mapping;
+
 
 namespace App.Comments.Data
 {
-    public class CommentsContext : DbContext
+    public class CommentsContext : IdentityDbContext<ApplicationUser>
     {
         public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
         {
 
         }
 
-        DbSet<Comment> Comments { get; set; }
-        DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new CommentMap());
-            modelBuilder.ApplyConfiguration(new ApplicationUserMap());
+            modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
+            modelBuilder.Entity<Comment>().ToTable("Comment");
+            
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+          
         }
     }
 }

@@ -26,6 +26,9 @@ namespace NetCoreChat
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<CommentsContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<CommentsContext>()
                 .AddDefaultTokenProviders();
@@ -35,8 +38,7 @@ namespace NetCoreChat
 
             services.AddMvc();
 
-            services.AddDbContext<CommentsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("App.Comments.Data")));
+
 
         }
 
