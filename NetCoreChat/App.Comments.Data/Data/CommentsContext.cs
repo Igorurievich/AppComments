@@ -13,6 +13,7 @@ namespace App.Comments.Data
         }
 
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
