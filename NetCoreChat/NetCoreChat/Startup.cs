@@ -8,6 +8,8 @@ using NetCoreChat.Data;
 using NetCoreChat.Services;
 using App.Comments.Common.Entities;
 using App.Comments.Data;
+using App.Comments.Data.Repositories;
+using App.Comments.Common.Interfaces.Repositories;
 
 namespace NetCoreChat
 {
@@ -28,6 +30,8 @@ namespace NetCoreChat
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<CommentsContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient(typeof(ICommentRepository), typeof(CommentRepository));
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {

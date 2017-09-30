@@ -1,8 +1,9 @@
-﻿using System;
+﻿using App.Comments.Common.Interfaces;
+using System;
 
 namespace App.Comments.Common.Entities
 {
-    public class Comment
+    public class Comment : IEntity
     {
         public int ID { get; set; }
 

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using App.Comments.Common.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
 namespace App.Comments.Common.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IEntity
     {
         public ICollection<Comment> Comments { get; set; }
 
