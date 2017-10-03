@@ -10,6 +10,7 @@ using App.Comments.Common.Entities;
 using App.Comments.Data;
 using App.Comments.Data.Repositories;
 using App.Comments.Common.Interfaces.Repositories;
+using Newtonsoft.Json.Serialization;
 
 namespace NetCoreChat
 {
@@ -31,6 +32,12 @@ namespace NetCoreChat
                 .AddEntityFrameworkStores<CommentsContext>()
                 .AddDefaultTokenProviders();
 
+            services
+                .AddMvc()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
+
             services.AddTransient(typeof(ICommentRepository), typeof(CommentRepository));
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
@@ -41,6 +48,8 @@ namespace NetCoreChat
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddMvc();
+
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -70,6 +79,8 @@ namespace NetCoreChat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseSignalR();
         }
     }
 }

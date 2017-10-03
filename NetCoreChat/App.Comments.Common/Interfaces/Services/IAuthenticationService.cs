@@ -1,7 +1,4 @@
 ﻿using App.Comments.Common.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace App.Comments.Common.Interfaces.Services
 {
