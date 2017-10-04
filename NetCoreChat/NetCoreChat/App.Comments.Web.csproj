@@ -11,6 +11,20 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ClientApp\**" />
+    <Content Remove="ClientApp\**" />
+    <EmbeddedResource Remove="ClientApp\**" />
+    <None Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="app\app.component.ts" />
+    <None Remove="app\comments\comments.component.ts" />
+    <None Remove="app\interfaces.ts" />
+    <None Remove="app\services\data.service.ts" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AngularJS.Core" Version="1.6.5" />
@@ -52,7 +66,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\" />
+    <TypeScriptCompile Include="app\app.component.ts" />
+    <TypeScriptCompile Include="app\app.routes.ts" />
+    <TypeScriptCompile Include="app\comments\comments.component.ts" />
+    <TypeScriptCompile Include="app\interfaces.ts" />
+    <TypeScriptCompile Include="app\services\data.service.ts" />
   </ItemGroup>
 
 </Project>

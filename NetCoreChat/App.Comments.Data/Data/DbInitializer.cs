@@ -37,6 +37,8 @@ namespace App.Comments.Data.Data
             user.Comments = new List<Comment>();
             user.Comments.Add(comments.FirstOrDefault());
 
+            comments.FirstOrDefault().ApplicationUser = user;
+
             context.SaveChanges();
         }
     }

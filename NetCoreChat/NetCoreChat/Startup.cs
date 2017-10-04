@@ -48,8 +48,6 @@ namespace NetCoreChat
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddMvc();
-
-            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -70,8 +68,6 @@ namespace NetCoreChat
             app.UseAuthentication();
 
             app.UseWebSockets();
-
-            //app.UseMiddleware<ChatWebSocketMiddleware>();
 
             app.UseMvc(routes =>
             {
