@@ -23,6 +23,7 @@
     <None Remove="app\comments\comments.component.ts" />
     <None Remove="app\interfaces.ts" />
     <None Remove="app\services\data.service.ts" />
+    <None Remove="app\services\feed.service.ts" />
   </ItemGroup>
 
 
@@ -69,8 +70,10 @@
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.routes.ts" />
     <TypeScriptCompile Include="app\comments\comments.component.ts" />
+    <TypeScriptCompile Include="app\home\home.component.ts" />
     <TypeScriptCompile Include="app\interfaces.ts" />
     <TypeScriptCompile Include="app\services\data.service.ts" />
+    <TypeScriptCompile Include="app\services\feed.service.ts" />
   </ItemGroup>
 
 </Project>

@@ -5,9 +5,9 @@ import { FeedService } from '../services/feed.service';
 
 @Component({
     selector: 'chat',
-    templateUrl: 'app/shared/components/chat.component.html'
+    templateUrl: 'app/components/comments.component.html'
 })
-export class ChatComponent implements OnInit {
+export class CommentsComponent implements OnInit {
 
     @Input() matches: Match[];
     @Input() connection: string;

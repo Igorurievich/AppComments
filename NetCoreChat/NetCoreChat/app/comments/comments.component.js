@@ -9,11 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component, Input } from '@angular/core';
 import { FeedService } from '../services/feed.service';
-var ChatComponent = (function () {
-    function ChatComponent(feedService) {
+var CommentsComponent = (function () {
+    function CommentsComponent(feedService) {
         this.feedService = feedService;
     }
-    ChatComponent.prototype.ngOnInit = function () {
+    CommentsComponent.prototype.ngOnInit = function () {
         var self = this;
         self.feedService.addChatMessage.subscribe(function (message) {
             console.log('received..');
@@ -23,23 +23,22 @@ var ChatComponent = (function () {
             self.messages.unshift(message);
         });
     };
-    return ChatComponent;
+    return CommentsComponent;
 }());
 __decorate([
     Input(),
     __metadata("design:type", Array)
-], ChatComponent.prototype, "matches", void 0);
+], CommentsComponent.prototype, "matches", void 0);
 __decorate([
     Input(),
     __metadata("design:type", String)
-], ChatComponent.prototype, "connection", void 0);
-ChatComponent = __decorate([
+], CommentsComponent.prototype, "connection", void 0);
+CommentsComponent = __decorate([
     Component({
         selector: 'chat',
-        templateUrl: 'app/shared/components/chat.component.html'
+        templateUrl: 'app/components/comments.component.html'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof FeedService !== "undefined" && FeedService) === "function" && _a || Object])
-], ChatComponent);
-export { ChatComponent };
-var _a;
+    __metadata("design:paramtypes", [FeedService])
+], CommentsComponent);
+export { CommentsComponent };
 //# sourceMappingURL=comments.component.js.map

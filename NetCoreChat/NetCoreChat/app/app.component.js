@@ -8,13 +8,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { FeedService } from './shared/services/feed.service';
+import { FeedService } from './services/feed.service';
 var AppComponent = (function () {
     function AppComponent(service) {
         this.service = service;
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.service.start(true).subscribe(null, function (error) { return console.log('Error on init: ' + error); });
+        this.service.start(true).subscribe();
     };
     return AppComponent;
 }());
@@ -24,8 +24,7 @@ AppComponent = __decorate([
         templateUrl: 'app/app.component.html',
         providers: [FeedService]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof FeedService !== "undefined" && FeedService) === "function" && _a || Object])
+    __metadata("design:paramtypes", [FeedService])
 ], AppComponent);
 export { AppComponent };
-var _a;
 //# sourceMappingURL=app.component.js.map

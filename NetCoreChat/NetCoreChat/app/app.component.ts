@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { SignalRConnectionStatus } from './shared/interfaces';
+import { FeedService } from './services/feed.service';
+import { SignalRConnectionStatus } from './interfaces';
 
 @Component({
     selector: 'my-app',
@@ -9,11 +10,9 @@ import { SignalRConnectionStatus } from './shared/interfaces';
 })
 export class AppComponent implements OnInit {
 
-    constructor() { }
+    constructor(private service: FeedService) { }
 
     ngOnInit() {
-        this.service.start(true).subscribe(
-            null,
-            error => console.log('Error on init: ' + error));
+        this.service.start(true).subscribe();
     }
 }
