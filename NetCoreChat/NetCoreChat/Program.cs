@@ -1,4 +1,4 @@
-﻿using App.Comments.Data;
+using App.Comments.Data;
 using App.Comments.Data.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
