@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 
 namespace NetCoreChat
 {
@@ -34,7 +35,11 @@ namespace NetCoreChat
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
+                .UseStartup<Startup>().
+                  UseKestrel(options =>
+                  {
+                    options.Listen(IPAddress.Loopback, 5000);
+                  })
                 .Build();
     }
 }

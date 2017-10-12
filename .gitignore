@@ -287,3 +287,4 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 NetCoreChat/NetCoreChat/secrets.json
+NetCoreChat/NetCoreChat/appsettings-Shared.json
