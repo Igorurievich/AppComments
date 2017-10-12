@@ -51,4 +51,8 @@
     <ProjectReference Include="..\App.Comments.Data\App.Comments.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="src\app\services\" />
+  </ItemGroup>
+
 </Project>

@@ -9,20 +9,14 @@ import { SocialUser } from "angular4-social-login";
 })
 export class CommentsComponent implements OnInit {
 
-    private user: SocialUser;
-    private loggedIn: boolean;
-
     counter: number = 0;
-    constructor(private authService: AuthService) {
+    constructor() {
         this.counter++;
     }
 
   ngOnInit() {
       this.counter++;
 
-      this.authService.authState.subscribe((user) => {
-          this.user = user;
-          this.loggedIn = (user != null);
-      });
+
   }
 }
