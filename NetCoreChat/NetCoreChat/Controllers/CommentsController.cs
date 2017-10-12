@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using App.Comments.Common.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using App.Comments.Common.Entities;
