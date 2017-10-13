@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http';
 import { CommentsComponent } from './comments/comments.component';
 import { AdminComponent } from './admin/admin.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SocialLoginModule } from "angular4-social-login";
 import { FacebookLoginProvider } from "angular4-social-login";
 import { AuthServiceConfig } from "angular4-social-login";
@@ -33,6 +33,7 @@ export function provideConfig() {
     AdminComponent,
     LoginComponent,
     SignupComponent
+      
   ],
   imports: [
       BrowserModule,
@@ -44,7 +45,9 @@ export function provideConfig() {
           { path: 'login', component: LoginComponent },
           { path: 'signup', component: SignupComponent }
       ]),
-      SocialLoginModule
+      SocialLoginModule,
+      ReactiveFormsModule,
+      FormsModule
   ],
   providers: [
     {

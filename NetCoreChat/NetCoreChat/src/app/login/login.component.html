@@ -1,4 +1,4 @@
-<div class="jumbotron bg-transparent text-center">
+<!--<div class="jumbotron bg-transparent text-center">
   <div *ngIf="!user" class="card text-center">
     <h6 class="card-header">
       Social Login Demo
@@ -25,4 +25,29 @@
       <button class="btn btn-danger" (click)="signOut()">Sign out</button>
     </div>
   </div>
+</div>-->
+
+<div class="center">
+  <form (submit)="loginUser($event)" id="loginForm">
+    <div class="input">
+      <label for="uname">Username:</label>
+      <input type="text" id="uname" />
+    </div>
+    <div class="input">
+      <label for="pwd">Password:</label>
+      <input type="password" id="pwd" />
+    </div>
+    <div class="input">
+      <input class="btn"
+             type="submit"
+             value="Login" />
+    </div>
+  </form>
+  <button id="socialFb"
+          class="btn btn-social-icon btn-facebook"
+          (click)="signInWithFB()">
+    <span class="fa fa-facebook"></span>
+  </button>
 </div>
+
+
