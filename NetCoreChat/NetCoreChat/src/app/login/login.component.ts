@@ -9,8 +9,6 @@ import { Router } from "@angular/router";
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-   
     constructor(private authService: AuthenticationService, private router: Router) {
 
     }
@@ -28,10 +26,14 @@ export class LoginComponent implements OnInit {
 
         if (username == 'admin' && password == 'admin') {
             this.router.navigate(["comments"]);
+            
         }
+
+        let temp = this.authService.login(username, password);
+        console.log("Temp:", temp);
     }
 
     signInWithFB() {
-        console.log("fb");
+        this.authService.logInWithFB();
     }
 }
