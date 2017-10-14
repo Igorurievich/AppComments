@@ -20,6 +20,7 @@ namespace App.Comments.Data.Data
             }
 
             ApplicationUser user = new ApplicationUser();
+			user.UserName = "John Doe";
 
             context.Users.Add(user);
 

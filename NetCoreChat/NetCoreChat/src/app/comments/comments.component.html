@@ -6,7 +6,7 @@
 
 <div id="commentsContainer">
   <tr *ngFor="let comment of Comments">
-    <h2>{{comment.autor.applicationUser}}</h2>
+    <h2>{{comment.applicationUser.userName}}</h2>
     <p style="margin-left:15px">{{comment.description}}</p>
   </tr>
 </div>

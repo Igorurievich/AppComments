@@ -19,7 +19,7 @@ export class CommentsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.httpService.get('/api/comments').subscribe(values => {
+        this.httpService.get('/api/comments/GetAllComments').subscribe(values => {
             this.Comments = values.json();
 
             console.log(this.Comments);

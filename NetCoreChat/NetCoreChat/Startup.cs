@@ -14,6 +14,7 @@ using App.Comments.Common.Interfaces.Services;
 using App.Comments.Common.Services;
 using Newtonsoft.Json.Serialization;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.AspNetCore.Routing;
 
 namespace NetCoreChat
 {
@@ -94,6 +95,14 @@ namespace NetCoreChat
 			app.UseMvcWithDefaultRoute();
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
+
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute("AllComments", "api/comments/getAllComments",
+					defaults: new { controller = "Comments", action = "GetAllComments" });
+			});
+
+			RouteBuilder routeBuilder = new RouteBuilder(app);
 		}
 	}
 }

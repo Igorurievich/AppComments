@@ -15,8 +15,6 @@ export class AppComponent {
   apiValues: string[] = [];
 
   ngOnInit() {
-    this._httpService.get('/api/comments').subscribe(values => {
-      this.apiValues = values.json() as string[];
-    });
+   
   }
 }
