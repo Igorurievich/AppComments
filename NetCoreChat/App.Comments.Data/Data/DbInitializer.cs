@@ -19,23 +19,21 @@ namespace App.Comments.Data.Data
                 return;
             }
 
-            var comments = new Comment[]
+            ApplicationUser user = new ApplicationUser();
+
+            context.Users.Add(user);
+
+            user.Comments = new Comment[]
             {
-                new Comment{Title="Hello World 1 title", Description = "Hello World 1 description"},
-                new Comment{Title="Hello World 2 title", Description = "Hello World 2 description"},
-                new Comment{Title="Hello World 3 title", Description = "Hello World 3 description"},
+                new Comment{Title="Hello World 1 title", Description = "Hello World 1 description", ApplicationUser = user},
+                new Comment{Title="Hello World 2 title", Description = "Hello World 2 description", ApplicationUser = user},
+                new Comment{Title="Hello World 3 title", Description = "Hello World 3 description", ApplicationUser = user},
             };
 
-            foreach (var comment in comments)
+            foreach (var comment in user.Comments)
             {
                 context.Comments.Add(comment);
             }
-            context.SaveChanges();
-
-
-            ApplicationUser user = new ApplicationUser();
-            user.Comments = new List<Comment>();
-            user.Comments.Add(comments.FirstOrDefault());
 
             context.SaveChanges();
         }

@@ -7,21 +7,25 @@ namespace App.Comments.Data
 {
     public class CommentsContext : IdentityDbContext<ApplicationUser>
     {
+
         public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
         {
-
-        }
+			
+		}
 
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
+        //public DbSet<ApplicationUser> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
-            modelBuilder.Entity<Comment>().ToTable("Comment");
-            
+			modelBuilder.Entity<Comment>().ToTable("Comment");
+
+			
+
+			
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

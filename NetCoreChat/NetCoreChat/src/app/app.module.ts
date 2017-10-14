@@ -20,7 +20,7 @@ import { FacebookLoginProvider } from "angular4-social-login";
 const appRoutes: Routes = [
     {
         path: 'comments',
-        canActivate: [AuthguardGuard],
+        
         component: CommentsComponent
     },
     {

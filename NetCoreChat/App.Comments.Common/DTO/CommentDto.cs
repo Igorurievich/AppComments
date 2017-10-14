@@ -1,11 +1,8 @@
-﻿using App.Comments.Common.Interfaces;
+using App.Comments.Common.Entities;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace App.Comments.Common.Entities
-{
-    public class Comment : IEntity
-    {
+public class CommentDto {
+
         public int ID { get; set; }
 
         public string Title { get; set; }
@@ -16,5 +13,8 @@ namespace App.Comments.Common.Entities
 
         public DateTime PostTime { get; set; }
 
+    public CommentDto()
+    {
+        
     }
 }

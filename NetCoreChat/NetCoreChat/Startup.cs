@@ -10,88 +10,90 @@ using App.Comments.Data;
 using App.Comments.Data.Repositories;
 using App.Comments.Common.Interfaces.Repositories;
 using System.IO;
+using App.Comments.Common.Interfaces.Services;
+using App.Comments.Common.Services;
+using Newtonsoft.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace NetCoreChat
 {
-  public class Startup
-  {
-    private IHostingEnvironment CurrentEnvironment { get; set; }
-    public IConfiguration Configuration { get; }
+	public class Startup
+	{
+		private IHostingEnvironment CurrentEnvironment { get; set; }
+		public IConfiguration Configuration { get; }
 
-    public Startup(IConfiguration configuration, IHostingEnvironment env)
-    {
-      Configuration = configuration;
-      CurrentEnvironment = env;
+		public Startup(IConfiguration configuration, IHostingEnvironment env)
+		{
+			Configuration = configuration;
+			CurrentEnvironment = env;
 
-      var builder = new ConfigurationBuilder()
-          .SetBasePath(env.ContentRootPath)
-          .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-          .AddJsonFile("appsettings-Shared.json", optional: false)
-          .AddJsonFile("secrets.json", optional: false)
-          .AddEnvironmentVariables();
-      Configuration = builder.Build();
-    }
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("appsettings-Shared.json", optional: false)
+				.AddJsonFile("secrets.json", optional: false)
+				.AddEnvironmentVariables();
 
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddDbContext<CommentsContext>(options =>
-          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			Configuration = builder.Build();
+		}
 
-      services.AddIdentity<ApplicationUser, IdentityRole>()
-          .AddEntityFrameworkStores<CommentsContext>()
-          .AddDefaultTokenProviders();
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddDbContext<CommentsContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-      services.AddTransient(typeof(ICommentRepository), typeof(CommentRepository));
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<CommentsContext>()
+				.AddDefaultTokenProviders();
 
-      services.AddAuthentication().AddFacebook(facebookOptions =>
-      {
-        facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-        facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-      });
+			services.AddTransient(typeof(ICommentRepository), typeof(CommentRepository));
+			services.AddTransient(typeof(ICommentsService), typeof(CommentsService));
 
-      services.AddTransient<IEmailSender, EmailSender>();
-      services.AddMvc();
-    }
+			services.AddAuthentication().AddFacebook(facebookOptions =>
+			{
+				facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+				facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+			});
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-        app.UseBrowserLink();
-        app.UseDatabaseErrorPage();
-      }
-      else
-      {
-        app.UseExceptionHandler("/Home/Error");
-      }
+			services.AddTransient<IEmailSender, EmailSender>();
+			services.AddMvc().AddJsonOptions(options =>
+			{
+				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			});
+		}
 
-      app.UseAuthentication();
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseBrowserLink();
+				app.UseDatabaseErrorPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Home/Error");
+			}
 
-      app.UseWebSockets();
+			app.UseAuthentication();
 
-      //app.UseMiddleware<ChatWebSocketMiddleware>();
+			app.UseWebSockets();
 
-      //app.UseMvc(routes =>
-      //{
-      //    routes.MapRoute(
-      //        name: "default",
-      //        template: "{controller=Home}/{action=Index}/{id?}");
-      //});
-
-      app.Use(async (context, next) => {
-        await next();
-        if (context.Response.StatusCode == 404 &&
-           !Path.HasExtension(context.Request.Path.Value) &&
-           !context.Request.Path.Value.StartsWith("/api/"))
-        {
-          context.Request.Path = "/index.html";
-          await next();
-        }
-      });
-      app.UseMvcWithDefaultRoute();
-      app.UseDefaultFiles();
-      app.UseStaticFiles();
-    }
-  }
+			app.Use(async (context, next) =>
+			{
+				await next();
+				if (context.Response.StatusCode == 404 &&
+				   !Path.HasExtension(context.Request.Path.Value) &&
+				   !context.Request.Path.Value.StartsWith("/api/"))
+				{
+					context.Request.Path = "/index.html";
+					await next();
+				}
+			});
+			app.UseMvcWithDefaultRoute();
+			app.UseDefaultFiles();
+			app.UseStaticFiles();
+		}
+	}
 }
