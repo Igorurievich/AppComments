@@ -4,13 +4,14 @@
       <a class="navbar-brand">Comments application</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="/comments">Comments</a></li>
+      <li><a [routerLink]="comments">Comments</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="this.authService.isLoggedIn()"><a href="" (click)="logOut()" ><span class="glyphicon glyphicon-user"></span>Log Out</a></li>
+        <li *ngIf="isLogged"><a><span class="glyphicon glyphicon-user"></span>Hello, {{userName}}</a></li>
+        <li *ngIf="isLogged"><a (click)="logOut()"><span class="glyphicon glyphicon-user"></span>Log Out</a></li>
 
-        <li *ngIf="!this.authService.isLoggedIn()"><a href="/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-        <li *ngIf="!this.authService.isLoggedIn()"><a href="/login"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
+        <li *ngIf="!isLogged"><a [routerLink]="signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+        <li *ngIf="!isLogged"><a [routerLink]="login"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
     </ul>
   </div>
 </nav>

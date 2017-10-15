@@ -4,12 +4,17 @@ import { FacebookLoginProvider } from "angular4-social-login";
 import { AuthService } from "angular4-social-login";
 import { SocialUser, AuthServiceConfig } from "angular4-social-login";
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
+import { EventEmitter, Output } from '@angular/core';
 
 @Injectable()
 export class AuthenticationService {
 
     private user: SocialUser;
     public token: string;
+
+    @Output() getLoggedInName: EventEmitter<string> = new EventEmitter();
+
+    @Output() getLoggedInStatus: EventEmitter<boolean> = new EventEmitter();
 
     logInWithFB(): any {
         Observable.fromPromise(this.authService.signIn(FacebookLoginProvider.PROVIDER_ID))
@@ -25,8 +30,15 @@ export class AuthenticationService {
             }); //TODO: Fix this shit
     }
 
-    public isLoggedIn(): boolean {
+    public getLoggedUserName(): string {
+        let curUsr = JSON.parse(localStorage.getItem('currentUser'));
+        if (curUsr == null) {
+            return "";
+        }
+        return curUsr.username;
+    }
 
+    public isLoggedIn(): boolean {
         let result = false;
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
@@ -73,8 +85,8 @@ export class AuthenticationService {
             this.token = token;
             // store username and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-
-            console.log("TOKEN:" + token);
+            this.getLoggedInName.emit(username);
+            this.getLoggedInStatus.emit(true);
         }
     }
 
@@ -82,8 +94,7 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
-
-        console.log("logged out");
+        this.getLoggedInStatus.emit(false);
     }
 
 
