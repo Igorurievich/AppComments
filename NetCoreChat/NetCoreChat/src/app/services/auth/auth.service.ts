@@ -3,7 +3,7 @@ import { Observable } from "rxjs/Observable";
 import { FacebookLoginProvider } from "angular4-social-login";
 import { AuthService } from "angular4-social-login";
 import { SocialUser, AuthServiceConfig } from "angular4-social-login";
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 
 @Injectable()
 export class AuthenticationService {
@@ -23,34 +23,64 @@ export class AuthenticationService {
         //    console.log(this.user.firstName, this.user.email, this.loggedIn);
         //});
     }
+
+    testResponse: any;
     
 
-    constructor(private http: Http) {
+    constructor(private httpService: Http) {
         // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
+        //var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        //this.token = currentUser && currentUser.token;
     }
 
-    login(username: string, password: string) {
-        return this.http.post('/api/account/LogIn', JSON.stringify({ username: username, password: password }))
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                let token = response.json() && response.json().token;
-                console.log(token);
-                if (token) {
-                    // set token property
-                    this.token = token;
 
-                    // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+    register(username: string, password: string, email: string) {
+        console.log("registerMethod");
 
-                    // return true to indicate successful login
-                    return true;
-                } else {
-                    // return false to indicate failed login
-                    return false;
-                }
-            });
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('username', username);
+        urlSearchParams.append('password', password);
+        urlSearchParams.append('email', email);
+        console.log(urlSearchParams);
+        this.httpService.post('/api/account/Register', { search: urlSearchParams }).subscribe(res => {
+            console.log(res.text());
+            return res;
+        });
+    }
+
+
+    login(username: string, password: string){
+        console.log("loginMethod");
+
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('username', username);
+        urlSearchParams.append('password', password);
+        this.httpService.get('/api/account/LogInUser', { search: urlSearchParams }).subscribe(res => {
+            console.log(res.text());
+            return res;
+        });
+
+        //return this.httpService.get('/api/account/GetTestData/', JSON.stringify({ username: username, password: password }))
+        //    .map((response: Response) => {
+        //        // login successful if there's a jwt token in the response
+        //        let token = response.json() && response.json().token;
+        //        console.log(token);
+        //        if (token) {
+        //            // set token property
+        //            this.token = token;
+
+        //            // store username and jwt token in local storage to keep user logged in between page refreshes
+        //            localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+
+        //            // return true to indicate successful login
+        //            console.log("return true");
+        //            return true;
+        //        } else {
+        //            // return false to indicate failed login
+        //            console.log("return false");
+        //            return false;
+        //        }
+        //    });
 
     }
 

@@ -96,10 +96,20 @@ namespace NetCoreChat
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
 
+
 			app.UseMvc(routes =>
 			{
-				routes.MapRoute("AllComments", "api/comments/getAllComments",
-					defaults: new { controller = "Comments", action = "GetAllComments" });
+				routes.MapRoute(
+					name: "DefaultApi",
+					template: "api/{controller}/{action}");
+
+				routes.MapRoute(
+					name: "LogInDefaultApi",
+					template: "api/{controller}/{action}/{username}/{password}");
+
+				routes.MapRoute(
+					name: "SignUpDefaultApi",
+					template: "api/{controller}/{action}/{username}/{password}/{email}");
 			});
 
 			RouteBuilder routeBuilder = new RouteBuilder(app);

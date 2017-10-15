@@ -13,6 +13,8 @@ export class LoginComponent implements OnInit {
 
     }
 
+    tempResponse: any;
+
     ngOnInit() {
 
     }
@@ -29,8 +31,8 @@ export class LoginComponent implements OnInit {
             
         }
 
-        let temp = this.authService.login(username, password);
-        console.log("Temp:", temp);
+        this.tempResponse = this.authService.login(username, password);
+        console.log("Temp:", this.tempResponse);
     }
 
     signInWithFB() {

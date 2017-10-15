@@ -17,10 +17,13 @@ using App.Comments.Common.Entities;
 using System.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Principal;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace NetCoreChat.Controllers
 {
-	[Authorize]
 	[Route("api/[controller]/[action]")]
 	public class AccountController : Controller
 	{
@@ -55,55 +58,64 @@ namespace NetCoreChat.Controllers
 			return View();
 		}
 
-		//public async Task<string> CreateUser(string username, string password)
-		//{
-		//	string jwt = String.Empty;
 
-		//	if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-		//	{
-		//		Response.StatusCode = (int)HttpStatusCode.BadRequest;
-		//	}
+		[AllowAnonymous]
+		[HttpGet]
+		public string GetTestData(string username, string password)
+		{
+			return username + "OK" + password;
+		}
 
-		//	var user = await _userManager.FindByNameAsync(username);
-		//	if (user == null) // user doesn't exist, create user
-		//	{
-		//		var newUser = await _userManager.CreateAsync(new ApplicationUser() { UserName = username }, password);
-		//		if (newUser.Succeeded) //user was successfully created, sign in user
-		//		{
-		//			user = await _userManager.FindByNameAsync(username);
-		//			var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, true);
-		//			if (signInResult.Succeeded) //user signed in, create a JWT
-		//			{
-		//				var tokenHandler = new JwtSecurityTokenHandler();
-		//				List<Claim> userClaims = new List<Claim>();
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<string> LogInUser(string username, string password)
+		{
+			string jwt = String.Empty;
 
-		//				//add any claims to the userClaims collection that you want to be part of the JWT
+			if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+			{
+				Response.StatusCode = (int)HttpStatusCode.BadRequest;
+			}
 
+			var user = await _userManager.FindByNameAsync(username);
+			if (user == null) // user doesn't exist, create user
+			{
+				var newUser = await _userManager.CreateAsync(new ApplicationUser() { UserName = username }, password);
+				if (newUser.Succeeded) //user was successfully created, sign in user
+				{
+					user = await _userManager.FindByNameAsync(username);
+					var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, true);
+					if (signInResult.Succeeded) //user signed in, create a JWT
+					{
+						var tokenHandler = new JwtSecurityTokenHandler();
+						List<Claim> userClaims = new List<Claim>();
 
+						//add any claims to the userClaims collection that you want to be part of the JWT
 
-		//				ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), userClaims);
-		//				DateTime expires = DateTime.Now.AddMinutes(30); //or whatever
+						ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), userClaims);
+						DateTime expires = DateTime.Now.AddMinutes(30); //or whatever
 
-		//				var securityToken = tokenHandler.CreateToken(
-		//					issuer: TokenOptions.DefaultProvider,  //_tokenAuthOptions is a class that holds the issuer, audience, and RSA security key
-		//					audience: TokenOptions.DefaultAuthenticatorProvider,
-		//					subject: identity,
-		//					notBefore: DateTime.Now,
-		//					expires: expires,
-		//					signingCredentials: TokenOptions.DefaultProvider
-		//					);
+						var key = Encoding.UTF8.GetBytes(user.Id);
+						var signingKey = new SymmetricSecurityKey(key);
+						var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-		//				jwt = tokenHandler.WriteToken(securityToken);
-		//				Response.StatusCode = (int)HttpStatusCode.Created;
-		//				await _signInManager.SignOutAsync(); //sign the user out, which deletes the cookie that gets added if you are using Identity.  It's not needed as security is based on the JWT
-		//			}
-		//			return "token";
-		//		}
-		//		return null;
-		//		//handle other cases...
+						var securityToken = tokenHandler.CreateJwtSecurityToken(
+							subject: identity,
+							notBefore: DateTime.Now,
+							expires: expires,
+							signingCredentials: signingCredentials
+							);
 
-		//	}
-		//}
+						jwt = tokenHandler.WriteToken(securityToken);
+						Response.StatusCode = (int)HttpStatusCode.Created;
+
+						return jwt;
+						//await _signInManager.SignOutAsync(); //sign the user out, which deletes the cookie that gets added if you are using Identity.  It's not needed as security is based on the JWT
+					}
+				}
+			}
+			return "false";
+		}
 
 
 		[HttpPost]
@@ -259,42 +271,71 @@ namespace NetCoreChat.Controllers
 			return View();
 		}
 
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult Register(string returnUrl = null)
-		{
-			ViewData["ReturnUrl"] = returnUrl;
-			return View();
-		}
+
+			// disable pass validation;
+
 
 		[HttpPost]
 		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+		public async Task<bool> Register(string username, string password, string email)
 		{
-			ViewData["ReturnUrl"] = returnUrl;
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-				var result = await _userManager.CreateAsync(user, model.Password);
+				
+				var user = new ApplicationUser { UserName = username, Email = email };
+				var result = await _userManager.CreateAsync(user);
 				if (result.Succeeded)
 				{
 					_logger.LogInformation("User created a new account with password.");
 
 					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 					var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-					await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+					await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
 					await _signInManager.SignInAsync(user, isPersistent: false);
 					_logger.LogInformation("User created a new account with password.");
-					return RedirectToLocal(returnUrl);
+					return true;
+				}
+				else
+				{
+					 var exceptionText = result.Errors.Aggregate("User Creation Failed - Identity Exception. Errors were: \n\r\n\r", (current, error) => current + (" - " + error + "\n\r"));
+					 throw new Exception (exceptionText);
 				}
 				AddErrors(result);
 			}
-
+			//ASDasdasdasd#12
 			// If we got this far, something failed, redisplay form
-			return View(model);
+			return false;
 		}
+
+		//[HttpPost]
+		//[AllowAnonymous]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+		//{
+		//	ViewData["ReturnUrl"] = returnUrl;
+		//	if (ModelState.IsValid)
+		//	{
+		//		var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+		//		var result = await _userManager.CreateAsync(user, model.Password);
+		//		if (result.Succeeded)
+		//		{
+		//			_logger.LogInformation("User created a new account with password.");
+
+		//			var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+		//			var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+		//			await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+		//			await _signInManager.SignInAsync(user, isPersistent: false);
+		//			_logger.LogInformation("User created a new account with password.");
+		//			return RedirectToLocal(returnUrl);
+		//		}
+		//		AddErrors(result);
+		//	}
+
+		//	// If we got this far, something failed, redisplay form
+		//	return View(model);
+		//}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
