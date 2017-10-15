@@ -9,6 +9,7 @@ namespace App.Comments.Common.Interfaces.Repositories
 		void UpdateUser(ApplicationUser User);
 		void DeleteUser(ApplicationUser User);
 		ApplicationUser GetUser(string UserName, string Password);
+		ApplicationUser GetUserByUserNameAndEmail(string UserName, string Email);
 		IEnumerable<ApplicationUser> GetAll();
 	}
 }

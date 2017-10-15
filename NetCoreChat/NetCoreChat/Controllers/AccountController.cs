@@ -1,25 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using NetCoreChat.Models;
-using NetCoreChat.Models.AccountViewModels;
-using NetCoreChat.Services;
 using App.Comments.Common.Entities;
 using System.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Principal;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Newtonsoft.Json.Linq;
+using App.Comments.Common.Interfaces.Services;
 
 namespace NetCoreChat.Controllers
 {
@@ -31,12 +22,12 @@ namespace NetCoreChat.Controllers
 		//private readonly IEmailSender _emailSender;
 		//private readonly ILogger _logger;
 
-		private readonly App.Comments.Common.Interfaces.Services.IAuthenticationService _authenticationService;
+		private readonly IAuthenticationService _authenticationService;
 
 		public AccountController(
 			//IEmailSender emailSender,
 			//ILogger<AccountController> logger,
-			App.Comments.Common.Interfaces.Services.IAuthenticationService authenticationService)
+			IAuthenticationService authenticationService)
 		{
 			//_userManager = userManager;
 			//_signInManager = signInManager;
@@ -53,6 +44,24 @@ namespace NetCoreChat.Controllers
 			return username + "OK" + password;
 		}
 
+
+		[AllowAnonymous]
+		[HttpGet]
+		public string LogInUserWithFacebook(string username, string email)
+		{
+			if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email))
+			{
+				Response.StatusCode = (int)HttpStatusCode.BadRequest;
+			}
+			var user = _authenticationService.GetUserByUserNameAndEmail(username, email);
+
+			if (user != null)
+			{
+				return GenerateJWTBasedOnUser(user);
+			}
+			return string.Empty;
+		}
+
 		[AllowAnonymous]
 		[HttpGet]
 		public string LogInUser(string username, string password)
@@ -62,64 +71,79 @@ namespace NetCoreChat.Controllers
 			if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
 			{
 				Response.StatusCode = (int)HttpStatusCode.BadRequest;
-				return "BadRequest";
 			}
 
 			var user = _authenticationService.LogIn(username, password);
 			
-			if (user != null) // user doesn't exist, create user
+			if (user != null)
 			{
-				var tokenHandler = new JwtSecurityTokenHandler();
-				List<Claim> userClaims = new List<Claim>();
-
-				//add any claims to the userClaims collection that you want to be part of the JWT
-
-				ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), userClaims);
-				DateTime expires = DateTime.Now.AddMinutes(30); //or whatever
-
-				var key = Encoding.UTF8.GetBytes("application_comments_web_magister_work_key");
-				var signingKey = new SymmetricSecurityKey(key);
-				var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
-				var securityToken = tokenHandler.CreateJwtSecurityToken(
-					subject: identity,
-					notBefore: DateTime.Now,
-					expires: expires,
-					signingCredentials: signingCredentials
-					);
-
-				jwt = tokenHandler.WriteToken(securityToken);
-				Response.StatusCode = (int)HttpStatusCode.Created;
-
-				return jwt;
-				//await _signInManager.SignOutAsync(); //sign the user out, which deletes the cookie that gets added if you are using Identity.  It's not needed as security is based on the JWT
+				return GenerateJWTBasedOnUser(user);
 			}
-			return username + " | "+password;
+			return string.Empty;
 		}
 
 
 		[HttpPost]
 		[AllowAnonymous]
-		public string Register([FromForm]string username, [FromForm]string password, [FromForm]string email)
+		public bool Register([FromForm]string username, [FromForm]string password, [FromForm]string email)
 		{
-
 			if (ModelState.IsValid && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(email))
 			{
 				var user = new ApplicationUser { UserName = username, Email = email, Password = password };
 				var result = _authenticationService.Register(user);
 				if (result)
 				{
-					//var code =  _userManager.GenerateEmailConfirmationTokenAsync(user);
-					//var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-					//await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
-
-					//await _signInManager.SignInAsync(user, isPersistent: false);
-					//_logger.LogInformation("User created a new account with password.");
-					return username + " | " + password + " | " + email; ;
+					return true;
 				}
 			}
-			return "false";
+			return false;
 		}
+
+		[HttpGet]
+		[AllowAnonymous]
+		public bool IsUserExist(string username, string email)
+		{
+			if (ModelState.IsValid && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(email))
+			{
+				var result = _authenticationService.GetUserByUserNameAndEmail(username, email);
+				if (result != null)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+
+		private string GenerateJWTBasedOnUser(ApplicationUser user)
+		{
+			string jwt = String.Empty;
+
+			var tokenHandler = new JwtSecurityTokenHandler();
+			List<Claim> userClaims = new List<Claim>();
+			//add any claims to the userClaims collection that you want to be part of the JWT
+
+			ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), userClaims);
+			DateTime expires = DateTime.Now.AddMinutes(30); //or whatever
+
+			var key = Encoding.UTF8.GetBytes("application_comments_web_magister_work_key");
+			var signingKey = new SymmetricSecurityKey(key);
+			var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+			var securityToken = tokenHandler.CreateJwtSecurityToken(
+				subject: identity,
+				notBefore: DateTime.Now,
+				expires: expires,
+				signingCredentials: signingCredentials
+				);
+
+			jwt = tokenHandler.WriteToken(securityToken);
+			Response.StatusCode = (int)HttpStatusCode.Created;
+
+			return jwt;
+		}
+
+
 		#region Crap
 
 		//[HttpPost]

@@ -6,5 +6,6 @@ namespace App.Comments.Common.Interfaces.Services
     {
 		bool Register(ApplicationUser ApplicationUser);
 		ApplicationUser LogIn(string UserName, string Password);
+		ApplicationUser GetUserByUserNameAndEmail(string UserName, string Email);
 	}
 }

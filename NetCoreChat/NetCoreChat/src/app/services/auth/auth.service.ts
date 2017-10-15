@@ -9,15 +9,25 @@ import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 export class AuthenticationService {
 
     private user: SocialUser;
-
     public token: string;
+
     logInWithFB(): void {
 
         console.log("logged with FB");
         this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(res => {
             this.user = res;
-            console.log(this.user.firstName, this.user.email);
+            console.log(this.user.firstName, this.user.email, this.user.provider, this.user.id);
+
+            let urlSearchParams = new URLSearchParams();
+            urlSearchParams.append('username', this.user.firstName);
+            urlSearchParams.append('email', this.user.email);
+            this.httpService.get('/api/account/LogInUserWithFacebook', { search: urlSearchParams }).subscribe(res => {
+
+                this.putTokenToLocalStorage(res.text(), this.user.firstName);
+            });
         });
+
+        
     }
 
     constructor(private httpService: Http, private authService: AuthService) {
@@ -40,27 +50,25 @@ export class AuthenticationService {
         });
     }
 
-    login(username: string, password: string){
-        console.log("loginMethod");
 
+    login(username: string, password: string){
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
         this.httpService.get('/api/account/LogInUser', { search: urlSearchParams }).subscribe(res => {
-            let token = res.text();
-                if (token) {
-                    // set token property
-                    this.token = token;
-                    // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-
-                    // return true to indicate successful login
-                    return true;
-                } else {
-                    // return false to indicate failed login
-                    return false;
-                }
+            this.putTokenToLocalStorage(res.text(), username);
         });
+    }
+
+    private putTokenToLocalStorage(token: string, username:string) {
+        if (token) {
+            // set token property
+            this.token = token;
+            // store username and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+
+            console.log("TOKEN:" + token);
+        }
     }
 
     logout(): void {

@@ -46,6 +46,10 @@ let config = new AuthServiceConfig([
     }
 ]);
 
+export function provideConfig() {
+    return config;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,6 +69,10 @@ let config = new AuthServiceConfig([
   ],
   providers: [
       AuthenticationService,
+      {
+          provide: AuthServiceConfig,
+          useFactory: provideConfig
+      },
       AuthguardGuard
   ],
   bootstrap: [AppComponent]

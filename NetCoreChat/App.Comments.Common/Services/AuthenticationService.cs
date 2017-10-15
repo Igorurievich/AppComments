@@ -12,6 +12,12 @@ namespace App.Comments.Common.Services
 			_applicationUserRepository = applicationUserRepository;
 		}
 
+		public ApplicationUser GetUserByUserNameAndEmail(string UserName, string Email)
+		{
+			var user = _applicationUserRepository.GetUserByUserNameAndEmail(UserName, Email);
+			return user != null ? user : null;
+		}
+
 		public ApplicationUser LogIn(string UserName, string Password)
 		{
 			var user = _applicationUserRepository.GetUser(UserName, Password);
