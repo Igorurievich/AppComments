@@ -13,8 +13,6 @@ export class LoginComponent implements OnInit {
 
     }
 
-    tempResponse: any;
-
     ngOnInit() {
 
     }
@@ -24,15 +22,10 @@ export class LoginComponent implements OnInit {
         var username = e.target.elements[0].value;
         var password = e.target.elements[1].value;
 
-        console.log(username, password);
-
         if (username == 'admin' && password == 'admin') {
             this.router.navigate(["comments"]);
-            
         }
-
-        this.tempResponse = this.authService.login(username, password);
-        console.log("Temp:", this.tempResponse);
+        this.authService.login(username, password);
     }
 
     signInWithFB() {

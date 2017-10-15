@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Comments.Data
 {
-    public class CommentsContext : IdentityDbContext<ApplicationUser>
+    public class CommentsContext : DbContext
     {
 
         public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
@@ -14,7 +14,7 @@ namespace App.Comments.Data
 		}
 
         public DbSet<Comment> Comments { get; set; }
-        //public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,10 +22,6 @@ namespace App.Comments.Data
 
             modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
 			modelBuilder.Entity<Comment>().ToTable("Comment");
-
-			
-
-			
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
