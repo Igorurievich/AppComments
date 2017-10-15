@@ -17,34 +17,13 @@ namespace NetCoreChat.Controllers
 	[Route("api/[controller]/[action]")]
 	public class AccountController : Controller
 	{
-		//private readonly UserManager<ApplicationUser> _userManager;
-		//private readonly SignInManager<ApplicationUser> _signInManager;
-		//private readonly IEmailSender _emailSender;
-		//private readonly ILogger _logger;
-
 		private readonly IAuthenticationService _authenticationService;
 
-		public AccountController(
-			//IEmailSender emailSender,
-			//ILogger<AccountController> logger,
-			IAuthenticationService authenticationService)
+		public AccountController(IAuthenticationService authenticationService)
 		{
-			//_userManager = userManager;
-			//_signInManager = signInManager;
-			//_emailSender = emailSender;
-			//_logger = logger;
 			_authenticationService = authenticationService;
-
 		}
-
-		[AllowAnonymous]
-		[HttpGet]
-		public string GetTestData(string username, string password)
-		{
-			return username + "OK" + password;
-		}
-
-
+		
 		[AllowAnonymous]
 		[HttpGet]
 		public string LogInUserWithFacebook(string username, string email)
@@ -72,17 +51,14 @@ namespace NetCoreChat.Controllers
 			{
 				Response.StatusCode = (int)HttpStatusCode.BadRequest;
 			}
-
 			var user = _authenticationService.LogIn(username, password);
-			
 			if (user != null)
 			{
 				return GenerateJWTBasedOnUser(user);
 			}
 			return string.Empty;
 		}
-
-
+		
 		[HttpPost]
 		[AllowAnonymous]
 		public bool Register([FromForm]string username, [FromForm]string password, [FromForm]string email)
@@ -114,7 +90,6 @@ namespace NetCoreChat.Controllers
 			return false;
 		}
 
-
 		private string GenerateJWTBasedOnUser(ApplicationUser user)
 		{
 			string jwt = String.Empty;
@@ -142,7 +117,6 @@ namespace NetCoreChat.Controllers
 
 			return jwt;
 		}
-
 
 		#region Crap
 

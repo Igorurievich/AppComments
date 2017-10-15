@@ -7,11 +7,11 @@
       <li><a href="/comments">Comments</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li *ngIf="this.authService.isLoggedIn()"><a href="" (click)="logOut()" ><span class="glyphicon glyphicon-user"></span>Log Out</a></li>
+
+        <li *ngIf="!this.authService.isLoggedIn()"><a href="/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+        <li *ngIf="!this.authService.isLoggedIn()"><a href="/login"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
     </ul>
   </div>
 </nav>
 <router-outlet></router-outlet>
-
-

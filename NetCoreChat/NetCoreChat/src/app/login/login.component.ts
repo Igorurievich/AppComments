@@ -19,16 +19,25 @@ export class LoginComponent implements OnInit {
 
     loginUser(e) {
         e.preventDefault();
+
         var username = e.target.elements[0].value;
         var password = e.target.elements[1].value;
-
-        if (username == 'admin' && password == 'admin') {
-            this.router.navigate(["comments"]);
-        }
-        this.authService.login(username, password);
+        
+        this.authService.login(username, password).subscribe(data => {
+            if (data.text().length != 0) {
+                this.router.navigate(["comments"]);
+            }
+        });
     }
 
     signInWithFB() {
-        this.authService.logInWithFB();
+
+        console.log(this.authService.logInWithFB());
+
+        this.authService.logInWithFB().subscribe(data => {
+            if (data.text().length != 0) {
+                this.router.navigate(["comments"]);
+            }
+        });
     }
 }

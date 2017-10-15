@@ -11,23 +11,30 @@ export class AuthenticationService {
     private user: SocialUser;
     public token: string;
 
-    logInWithFB(): void {
+    logInWithFB(): any {
+        Observable.fromPromise(this.authService.signIn(FacebookLoginProvider.PROVIDER_ID))
+            .switchMap(res => {
+                let urlSearchParams = new URLSearchParams();
+                urlSearchParams.append('username', res.firstName);
+                urlSearchParams.append('email', res.email);
+                return this.httpService.get('/api/account/LogInUserWithFacebook', { search: urlSearchParams })
+                    .map(res => {
+                        this.putTokenToLocalStorage(res.text(), this.user.firstName);
+                        return res.text();
+                    });
+            }); //TODO: Fix this shit
+    }
 
-        console.log("logged with FB");
-        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(res => {
-            this.user = res;
-            console.log(this.user.firstName, this.user.email, this.user.provider, this.user.id);
+    public isLoggedIn(): boolean {
 
-            let urlSearchParams = new URLSearchParams();
-            urlSearchParams.append('username', this.user.firstName);
-            urlSearchParams.append('email', this.user.email);
-            this.httpService.get('/api/account/LogInUserWithFacebook', { search: urlSearchParams }).subscribe(res => {
-
-                this.putTokenToLocalStorage(res.text(), this.user.firstName);
-            });
-        });
-
+        let result = false;
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.token = currentUser && currentUser.token;
         
+        if (currentUser != null) {
+            result = true;
+        }
+        return result;
     }
 
     constructor(private httpService: Http, private authService: AuthService) {
@@ -36,27 +43,27 @@ export class AuthenticationService {
         this.token = currentUser && currentUser.token;
     }
 
-    register(username: string, password: string, email: string) {
-        console.log("registerMethod");
+    register(username: string, password: string, email: string): any {
 
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
         urlSearchParams.append('email', email);
         console.log(urlSearchParams);
-        this.httpService.post('/api/account/Register', urlSearchParams).subscribe(res => {
+        return this.httpService.post('/api/account/Register', urlSearchParams).subscribe(res => {
             console.log(res.text());
             return res;
         });
     }
 
-
-    login(username: string, password: string){
+    login(username: string, password: string) : any {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
-        this.httpService.get('/api/account/LogInUser', { search: urlSearchParams }).subscribe(res => {
+        return this.httpService.get('/api/account/LogInUser', { search: urlSearchParams })
+            .map(res => {
             this.putTokenToLocalStorage(res.text(), username);
+            return res;
         });
     }
 
@@ -75,6 +82,8 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
+
+        console.log("logged out");
     }
 
 
