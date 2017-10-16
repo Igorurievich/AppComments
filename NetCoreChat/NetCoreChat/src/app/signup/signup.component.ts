@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from "../services/auth/auth.service";
 import { Router } from "@angular/router";
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-signup',
@@ -24,7 +25,6 @@ export class SignupComponent implements OnInit {
         var email = e.target.elements[2].value;
 
         this.authService.register(username, password, email).subscribe(data => {
-
             if (data.text().length != 0) {
                 this.router.navigate(["comments"]);
             }

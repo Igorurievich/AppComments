@@ -56,13 +56,12 @@ export class AuthenticationService {
     }
 
     register(username: string, password: string, email: string): any {
-
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
         urlSearchParams.append('email', email);
-        console.log(urlSearchParams);
-        return this.httpService.post('/api/account/Register', urlSearchParams).subscribe(res => {
+
+        return this.httpService.post('/api/account/Register', urlSearchParams).map(res => {
             console.log(res.text());
             return res;
         });
