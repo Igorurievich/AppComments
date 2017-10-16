@@ -1,16 +1,39 @@
 <p>
   
 </p>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+ <div class="panel panel-default" id="commentsShowArea">
+         <tr *ngFor="let comment of Comments">
+             <h4 style="text-align:left;float:left;">{{comment.applicationUser.userName}}:</h4>
+             <h4 style="text-align:right;float:right;">{{comment.title}}</h4>
+             <p>{{comment.description}}</p>
+             <hr style="clear:both;" />
+         </tr>
+  </div>
+  <div class="footer">
+      <div class="panel panel-default" id="inputAreaPanel">
+          <div class="panel-heading">
+              <div>
+                  <strong>{{loggedUserName}}</strong>
+                  <button type="button" 
+                          id="sendButton"
+                          class="btn"
+                          (mouseup)="send()">Send</button>
+              </div>
+          </div>
+          <div class="panel-body">
+              <label for="title">Title:</label>
+              <input class="form-control form-inline"
+                     rows="1" 
+                     [(ngModel)]="commentTitle"
+                     #title>
 
-<div id="commentsContainer">
-  <tr *ngFor="let comment of Comments">
-    <h2>{{comment.applicationUser.userName}}</h2>
-    <p style="margin-left:15px">{{comment.description}}</p>
-  </tr>
-</div>
-
-<div class="footer">
-    <p>Footer</p>
-</div>
+              <label for="comment">Comment:</label>
+              <textarea class="form-control" 
+                        rows="3" 
+                        [(ngModel)]="commentText"
+                        #comment></textarea>
+          </div>
+      </div>
+  </div>
+    

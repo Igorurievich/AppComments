@@ -12,10 +12,21 @@ import {UserComment} from './UserComment';
 })
 export class CommentsComponent implements OnInit {
 
+    loggedUserName: string = "";
+
+    commentTitle: string;
+    commentText: string;
+    commentAutor: string;
+
     Comments: Array<UserComment>;
     constructor(private authService: AuthenticationService, 
-                private httpService: Http) {
-                    
+        private httpService: Http) {
+        this.authService.getLoggedInName.subscribe(name => this.changeName(name));
+        this.loggedUserName = this.authService.getLoggedUserName();
+    }
+
+    private changeName(name: string): void {
+        this.loggedUserName = name;
     }
 
     ngOnInit() {
@@ -24,5 +35,17 @@ export class CommentsComponent implements OnInit {
 
             console.log(this.Comments);
          });
+    }
+
+    onEnter(value: string) {
+        this.commentText = value;
+        console.log(this.commentText);
+    }
+
+    send() {
+
+        console.log(this.commentTitle);
+        console.log(this.commentText);
+        
     }
 }

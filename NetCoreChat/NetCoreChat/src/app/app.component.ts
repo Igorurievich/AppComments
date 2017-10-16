@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
     isLogged: boolean;
-
     userName: string = "";
     
     constructor(private authService: AuthenticationService, private router: Router) {

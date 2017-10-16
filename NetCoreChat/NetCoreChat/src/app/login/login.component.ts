@@ -16,6 +16,10 @@ import {
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+    private userName: string;
+    private password: string;
+
     constructor(private authService: AuthenticationService, private router: Router) {
 
     }
@@ -25,12 +29,8 @@ export class LoginComponent implements OnInit {
     }
 
     loginUser(e) {
-        e.preventDefault();
 
-        var username = e.target.elements[0].value;
-        var password = e.target.elements[1].value;
-        
-        this.authService.login(username, password).subscribe(data => {
+        this.authService.login(this.userName, this.password).subscribe(data => {
             this.router.navigate(["comments"]);
         });
     }

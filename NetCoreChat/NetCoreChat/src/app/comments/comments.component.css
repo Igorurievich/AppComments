@@ -1,17 +1,30 @@
-#commentsContainer{
-    padding-left: 50%;
-    padding-left: 30%;
-    padding-right: 30%;
-}
-
 .footer {
     position: fixed;
-    left: 0;
+    right: 20px;
     bottom: 0;
-    width: 100%;
-    height: 10%;
-    margin:0 auto;
-    background-color: red;
-    color: white;
-    text-align: center;
- }
+    height: 25%;
+    margin: 5px;
+    text-align: left;
+}
+
+#inputAreaPanel {
+    height: 100%;
+    width: 500px;
+    margin: auto;
+}
+
+#commentsShowArea {
+    height: 92%;
+    width: 50%;
+    margin: 5px;
+    overflow-y: scroll;
+}
+
+#sendButton {
+    float: right;
+    padding: 2px 13px 2px 13px;
+}
+
+textarea {
+    resize: none;
+}

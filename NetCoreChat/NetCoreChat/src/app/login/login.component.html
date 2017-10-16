@@ -28,17 +28,19 @@
 </div>-->
 
 <div class="center">
-  <form (submit)="loginUser($event)" id="loginForm">
+  <form (submit)="loginUser()" id="loginForm">
     <div class="input">
       <label for="uname">Username:</label>
       <input type="text" 
-             id="uname"
+             [(ngModel)]="userName"
+             name="uname"
              />
     </div>
     <div class="input">
       <label for="pwd">Password:</label>
       <input type="password" 
-             id="pwd" />
+             [(ngModel)]="password"
+             name="pwd" />
     </div>
     <div class="input">
       <input class="btn"

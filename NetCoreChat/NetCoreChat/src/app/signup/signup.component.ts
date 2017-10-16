@@ -10,6 +10,10 @@ import { Subscription } from 'rxjs/Rx';
 })
 export class SignupComponent implements OnInit {
 
+    private username: string;
+    private password: string;
+    private email: string;
+
     constructor(private authService: AuthenticationService, private router: Router) {
         
     }
@@ -19,12 +23,8 @@ export class SignupComponent implements OnInit {
     }
 
     register(e) {
-        e.preventDefault();
-        var username = e.target.elements[0].value;
-        var password = e.target.elements[1].value;
-        var email = e.target.elements[2].value;
 
-        this.authService.register(username, password, email).subscribe(data => {
+        this.authService.register(this.username, this.password, this.email).subscribe(data => {
             if (data.text().length != 0) {
                 this.router.navigate(["comments"]);
             }

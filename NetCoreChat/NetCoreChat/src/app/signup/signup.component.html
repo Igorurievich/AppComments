@@ -1,16 +1,22 @@
 <div class="center">
-    <form (submit)="register($event)" id="signUpForm">
+    <form (submit)="register()" id="signUpForm">
         <div class="input">
             <label for="uname">Username:</label>
-            <input type="text" id="uname" />
+            <input type="text"
+                   [(ngModel)]="username"
+                   name="uname" />
         </div>
         <div class="input">
             <label for="pwd">Password:</label>
-            <input type="password" id="pwd" />
+            <input type="password" 
+                   [(ngModel)]="password"
+                   name="pwd" />
         </div>
         <div class="input">
             <label for="email">Email:</label>
-            <input type="email" id="email" />
+            <input type="email" 
+                   [(ngModel)]="email"
+                   name="email" />
         </div>
         <div class="input">
             <input class="btn"
