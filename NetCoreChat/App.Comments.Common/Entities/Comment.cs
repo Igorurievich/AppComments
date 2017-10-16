@@ -18,5 +18,6 @@ namespace App.Comments.Common.Entities
         public ApplicationUser ApplicationUser { get; set; }
 
         public DateTime PostTime { get; set; }
+
     }
 }

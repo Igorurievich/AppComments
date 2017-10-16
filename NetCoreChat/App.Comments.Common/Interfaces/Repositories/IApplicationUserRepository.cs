@@ -10,6 +10,7 @@ namespace App.Comments.Common.Interfaces.Repositories
 		void DeleteUser(ApplicationUser User);
 		ApplicationUser GetUser(string UserName, string Password);
 		ApplicationUser GetUserByUserNameAndEmail(string UserName, string Email);
+		ApplicationUser GetUserByUserName(string UserName);
 		IEnumerable<ApplicationUser> GetAll();
 	}
 }

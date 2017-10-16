@@ -46,7 +46,6 @@ namespace NetCoreChat.Controllers
 		public string LogInUser(string username, string password)
 		{
 			string jwt = String.Empty;
-
 			if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
 			{
 				Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -99,9 +98,9 @@ namespace NetCoreChat.Controllers
 			//add any claims to the userClaims collection that you want to be part of the JWT
 
 			ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), userClaims);
-			DateTime expires = DateTime.Now.AddMinutes(30); //or whatever
+			DateTime expires = DateTime.Now.AddMinutes(30);
 
-			var key = Encoding.UTF8.GetBytes("application_comments_web_magister_work_key");
+			var key = Encoding.UTF8.GetBytes("application_comments_web_magister_work_mega_secret_ultra_key");
 			var signingKey = new SymmetricSecurityKey(key);
 			var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 

@@ -1,9 +1,6 @@
-using App.Comments.Common.Entities;
 using System;
 
 public class CommentDto {
-
-        public int Id { get; set; }
 
         public string Title { get; set; }
 

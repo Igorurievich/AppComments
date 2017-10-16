@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using App.Comments.Common.Entities;
+using System;
 
 namespace App.Comments.Common.Interfaces.Services
 {
     public interface ICommentsService
     {
-        IEnumerable<Comment> GetAllComments();
+        IEnumerable<CommentDto> GetAllComments();
 
-        Comment GetCommentByUserName(string UserName);
+        CommentDto GetCommentByUserName(string UserName);
+
+		void AddNewComment(CommentDto comment);
     }
 }

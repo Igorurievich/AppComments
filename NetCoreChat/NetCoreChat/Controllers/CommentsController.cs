@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using App.Comments.Common.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using App.Comments.Common.Interfaces.Services;
@@ -7,12 +6,15 @@ using AutoMapper;
 
 namespace App.Comments.Web.Controllers
 {
-
+	[Route("api/[controller]/[action]")]
 	public class CommentsController : Controller
 	{
 		private readonly ICommentsService _commentsService;
+		private readonly IAuthenticationService _authenticationService;
 		private readonly IMapper _mapper;
-		public CommentsController(ICommentsService commentsService, IMapper mapper)
+		public CommentsController(
+			ICommentsService commentsService,
+			IMapper mapper)
 		{
 			_commentsService = commentsService;
 			_mapper = mapper;
@@ -21,15 +23,19 @@ namespace App.Comments.Web.Controllers
 		[HttpGet]
 		public IEnumerable<CommentDto> GetAllComments()
 		{
-			var result = _commentsService.GetAllComments().ToList();
-			return _mapper.Map<List<Comment>, List<CommentDto>>(result);
+			return _commentsService.GetAllComments().AsEnumerable();
 		}
 
 		[HttpGet]
 		public CommentDto GetFirstComment()
 		{
-			var user = _commentsService.GetAllComments().AsQueryable().FirstOrDefault();
-			return _mapper.Map<Comment, CommentDto>(user);
+			return _commentsService.GetAllComments().FirstOrDefault();
+		}
+
+		[HttpPost]
+		public void NewComment([FromBody]CommentDto comment)
+		{
+			_commentsService.AddNewComment(comment);
 		}
 	}
 }

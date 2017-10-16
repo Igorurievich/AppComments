@@ -42,6 +42,12 @@ namespace App.Comments.Data.Repositories
 				.FirstOrDefault(x => x.UserName == UserName && x.Password == Password);
 		}
 
+		public ApplicationUser GetUserByUserName(string UserName)
+		{
+			return _dbContext.Users
+				.FirstOrDefault(x => x.UserName == UserName);
+		}
+
 		public ApplicationUser GetUserByUserNameAndEmail(string UserName, string Email)
 		{
 			return _dbContext.Users.FirstOrDefault(user => user.UserName == UserName && user.Email == Email);

@@ -1,4 +1,5 @@
 ﻿using App.Comments.Common.Entities;
+using App.Comments.Common.Interfaces.Services;
 using AutoMapper;
 
 namespace App.Comments.Common.Mapping
@@ -8,7 +9,8 @@ namespace App.Comments.Common.Mapping
 		public MappingProfile()
 		{
 			CreateMap<Comment, CommentDto>()
-			.ForMember(dest => dest.Autor, opt => opt.MapFrom(source => source.ApplicationUser.UserName));
+				.ForMember(dest => dest.Autor, opt => opt.MapFrom(source => source.ApplicationUser.UserName));
+			CreateMap<CommentDto, Comment>();
 		}
 	}
 }
