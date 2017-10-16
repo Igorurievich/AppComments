@@ -27,7 +27,7 @@ namespace App.Comments.Data.Data
 
 			for (int i = 0; i < 50; i++)
 			{
-				user.Comments.Add(new Comment { Title = "Hello World " + i + " title", Description = "Hello World " + i + " description", ApplicationUser = user });
+				user.Comments.Add(new Comment { Title = "Hello World " + i + " title", CommentText = "Hello World " + i + " description", ApplicationUser = user });
 			}
 
             foreach (var comment in user.Comments)

@@ -7,10 +7,10 @@ export class UserComment {
     Decsription: string;
     Autor: User;
     
-    constructor(id:number, title:string, description:string, autor:User){
+
+    constructor(id: number, title: string, description: string) {
         this.Id = id;
         this.Title = title;
         this.Decsription = description;
-        this.Autor = autor;
     }
 }

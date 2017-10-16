@@ -13,7 +13,7 @@ namespace App.Comments.Common.Entities
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public string CommentText { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 

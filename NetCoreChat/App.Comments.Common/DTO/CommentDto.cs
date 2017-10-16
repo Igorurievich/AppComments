@@ -3,18 +3,13 @@ using System;
 
 public class CommentDto {
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public string CommentText { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public string Autor { get; set; }
 
         public DateTime PostTime { get; set; }
-
-    public CommentDto()
-    {
-        
-    }
 }

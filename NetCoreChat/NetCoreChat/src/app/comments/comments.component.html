@@ -4,9 +4,9 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
  <div class="panel panel-default" id="commentsShowArea">
          <tr *ngFor="let comment of Comments">
-             <h4 style="text-align:left;float:left;">{{comment.applicationUser.userName}}:</h4>
+             <h4 style="text-align:left;float:left;">{{comment.autor}}:</h4>
              <h4 style="text-align:right;float:right;">{{comment.title}}</h4>
-             <p>{{comment.description}}</p>
+             <p>{{comment.commentText}}</p>
              <hr style="clear:both;" />
          </tr>
   </div>

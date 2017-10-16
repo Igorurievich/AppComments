@@ -4,6 +4,7 @@ import { SocialUser } from "angular4-social-login";
 import { AuthenticationService } from "../services/auth/auth.service";
 import { Http } from '@angular/http';
 import {UserComment} from './UserComment';
+import { User } from "../login/User";
 
 @Component({
     selector: 'app-comments',
@@ -12,13 +13,15 @@ import {UserComment} from './UserComment';
 })
 export class CommentsComponent implements OnInit {
 
-    loggedUserName: string = "";
+    private loggedUserName: string = "";
 
-    commentTitle: string;
-    commentText: string;
-    commentAutor: string;
+    private commentTitle: string;
+    private commentText: string;
+    private commentAutor: string;
 
-    Comments: Array<UserComment>;
+    private Comments: Array<UserComment> = new Array<UserComment>();
+
+
     constructor(private authService: AuthenticationService, 
         private httpService: Http) {
         this.authService.getLoggedInName.subscribe(name => this.changeName(name));
@@ -31,10 +34,16 @@ export class CommentsComponent implements OnInit {
 
     ngOnInit() {
         this.httpService.get('/api/comments/GetAllComments').subscribe(values => {
-            this.Comments = values.json();
+
+            this.Comments = values.json() as Array<UserComment>;
 
             console.log(this.Comments);
-         });
+        });
+
+
+        
+
+
     }
 
     onEnter(value: string) {
@@ -43,6 +52,8 @@ export class CommentsComponent implements OnInit {
     }
 
     send() {
+
+
 
         console.log(this.commentTitle);
         console.log(this.commentText);

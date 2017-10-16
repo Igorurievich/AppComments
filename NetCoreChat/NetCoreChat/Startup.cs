@@ -11,6 +11,7 @@ using App.Comments.Common.Interfaces.Services;
 using App.Comments.Common.Services;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Routing;
+using AutoMapper;
 
 namespace NetCoreChat
 {
@@ -56,6 +57,8 @@ namespace NetCoreChat
 				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 			});
+
+			services.AddAutoMapper();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

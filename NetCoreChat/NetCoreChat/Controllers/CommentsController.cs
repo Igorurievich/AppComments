@@ -3,27 +3,33 @@ using App.Comments.Common.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using App.Comments.Common.Interfaces.Services;
+using AutoMapper;
 
 namespace App.Comments.Web.Controllers
 {
+
 	public class CommentsController : Controller
 	{
-		ICommentsService _commentsService;
-		public CommentsController(ICommentsService commentsService)
+		private readonly ICommentsService _commentsService;
+		private readonly IMapper _mapper;
+		public CommentsController(ICommentsService commentsService, IMapper mapper)
 		{
 			_commentsService = commentsService;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
-		public IEnumerable<Comment> GetAllComments()
+		public IEnumerable<CommentDto> GetAllComments()
 		{
-			return _commentsService.GetAllComments().AsQueryable();
+			var result = _commentsService.GetAllComments().ToList();
+			return _mapper.Map<List<Comment>, List<CommentDto>>(result);
 		}
 
 		[HttpGet]
-		public Comment GetFirstComment()
+		public CommentDto GetFirstComment()
 		{
-			return _commentsService.GetAllComments().AsQueryable().FirstOrDefault();
+			var user = _commentsService.GetAllComments().AsQueryable().FirstOrDefault();
+			return _mapper.Map<Comment, CommentDto>(user);
 		}
 	}
 }
