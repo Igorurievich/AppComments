@@ -89,6 +89,21 @@ namespace NetCoreChat.Controllers
 			return false;
 		}
 
+		[HttpGet]
+		[AllowAnonymous]
+		public bool CheckUserName(string username)
+		{
+			if (ModelState.IsValid && !string.IsNullOrEmpty(username))
+			{
+				var result = _authenticationService.GetUserByUserName(username);
+				if (result != null)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		private string GenerateJWTBasedOnUser(ApplicationUser user)
 		{
 			string jwt = String.Empty;

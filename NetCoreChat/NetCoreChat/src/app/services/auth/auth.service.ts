@@ -5,6 +5,7 @@ import { AuthService } from "angular4-social-login";
 import { SocialUser, AuthServiceConfig } from "angular4-social-login";
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import { EventEmitter, Output } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Injectable()
 export class AuthenticationService {
@@ -13,7 +14,6 @@ export class AuthenticationService {
     public token: string;
 
     @Output() getLoggedInName: EventEmitter<string> = new EventEmitter();
-
     @Output() getLoggedInStatus: EventEmitter<boolean> = new EventEmitter();
 
     logInWithFB(): any {
@@ -38,20 +38,21 @@ export class AuthenticationService {
         return curUsr.username;
     }
 
-    public isLoggedIn(): boolean {
-        let result = false;
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
-        
-        if (currentUser != null) {
-            result = true;
-        }
-        return result;
+    public checkUserName(): any {
+        let userName = this.getLoggedUserName();
+
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('username', userName);
+        return this.httpService.get('/api/account/CheckUserName', { search: urlSearchParams })
+            .map(res => {
+
+                return res;
+            });
     }
 
-    constructor(private httpService: Http, private authService: AuthService) {
+    constructor(private httpService: Http, private authService: AuthService, private router:Router) {
         // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
     }
 
@@ -61,8 +62,8 @@ export class AuthenticationService {
         urlSearchParams.append('password', password);
         urlSearchParams.append('email', email);
 
-        return this.httpService.post('/api/account/Register', urlSearchParams).map(res => {
-            console.log(res.text());
+        return this.httpService.post('/api/account/Register', urlSearchParams)
+            .map(res => {
             return res;
         });
     }
@@ -94,8 +95,6 @@ export class AuthenticationService {
         this.token = null;
         localStorage.removeItem('currentUser');
         this.getLoggedInStatus.emit(false);
+        this.router.navigate(["login"]);
     }
-
-
-
 }

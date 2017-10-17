@@ -14,7 +14,7 @@ export class AppComponent {
     userName: string = "";
     
     constructor(private authService: AuthenticationService, private router: Router) {
-        this.isLogged = this.authService.isLoggedIn();
+        this.authService.checkUserName();
         this.authService.getLoggedInName.subscribe(name => this.changeName(name));
         this.authService.getLoggedInStatus.subscribe(status => this.changeStatus(status));
         this.userName = this.authService.getLoggedUserName();
