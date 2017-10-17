@@ -14,7 +14,7 @@ export class AppComponent {
     userName: string = "";
     
     constructor(private authService: AuthenticationService, private router: Router) {
-        this.authService.checkUserName();
+        //this.checkUser();
         this.authService.getLoggedInName.subscribe(name => this.changeName(name));
         this.authService.getLoggedInStatus.subscribe(status => this.changeStatus(status));
         this.userName = this.authService.getLoggedUserName();
@@ -25,12 +25,27 @@ export class AppComponent {
     }
 
     private changeStatus(status: boolean): void {
+        console.log()
         this.isLogged = status;
     }
 
     ngOnInit() {
         
     }
+
+    //checkUser() {
+    //    this.authService.checkUserName().subscribe(data => {
+    //        console.log(data);
+    //        if (data.toString() == "false") {
+    //            console.log(data);
+    //            this.authService.logout();
+    //        }
+    //        else {
+    //            this.userName = this.authService.getLoggedUserName();
+    //        }
+    //    });
+    //}
+
 
     logOut() {
         this.authService.logout();

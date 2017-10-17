@@ -38,17 +38,16 @@ export class AuthenticationService {
         return curUsr.username;
     }
 
-    public checkUserName(): any {
-        let userName = this.getLoggedUserName();
+    //public checkUserName(): any {
+    //    let userName = this.getLoggedUserName();
 
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('username', userName);
-        return this.httpService.get('/api/account/CheckUserName', { search: urlSearchParams })
-            .map(res => {
-
-                return res;
-            });
-    }
+    //    let urlSearchParams = new URLSearchParams();
+    //    urlSearchParams.append('username', userName);
+    //    return this.httpService.get('/api/account/CheckUserName', { search: urlSearchParams })
+    //        .map(res => {
+    //            return res.text();
+    //        });
+    //}
 
     constructor(private httpService: Http, private authService: AuthService, private router:Router) {
         // set token if saved in local storage
