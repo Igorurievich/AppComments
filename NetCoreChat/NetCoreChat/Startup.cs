@@ -12,6 +12,7 @@ using App.Comments.Common.Services;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Routing;
 using AutoMapper;
+using App.Comments.Web;
 
 namespace NetCoreChat
 {
@@ -58,11 +59,16 @@ namespace NetCoreChat
 				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 			});
 
+			services.AddSignalR();
+
 			services.AddAutoMapper();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
+
+			app.UseCors("AllowAny");
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -82,12 +88,16 @@ namespace NetCoreChat
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
 
-
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "DefaultApi",
 					template: "api/{controller}/{action}");
+			});
+
+			app.UseSignalR(routes =>  // <-- SignalR
+			{
+				routes.MapHub<CommentsPublisher>("commentsPublisher");
 			});
 
 			RouteBuilder routeBuilder = new RouteBuilder(app);
