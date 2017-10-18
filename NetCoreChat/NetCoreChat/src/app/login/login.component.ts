@@ -22,14 +22,14 @@ export class LoginComponent implements OnInit {
 
     constructor(private authService: AuthenticationService, private router: Router) {
 
+
     }
 
     ngOnInit() {
 
     }
 
-    loginUser(e) {
-
+    loginUser() {
         this.authService.login(this.userName, this.password).subscribe(data => {
             this.router.navigate(["comments"]);
         });

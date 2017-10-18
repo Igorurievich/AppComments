@@ -37,6 +37,10 @@ namespace NetCoreChat
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options => options.AddPolicy("AllowAny", x => {
+				x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+			}));
+
 			services.AddDbContext<CommentsContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

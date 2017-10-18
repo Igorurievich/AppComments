@@ -45,7 +45,6 @@ export class AuthenticationService {
         urlSearchParams.append('username', userName);
         return this.httpService.get('/api/account/CheckUserName', { search: urlSearchParams })
             .map(res => {
-
                 return res;
             });
     }
@@ -74,9 +73,13 @@ export class AuthenticationService {
         urlSearchParams.append('password', password);
         return this.httpService.get('/api/account/LogInUser', { search: urlSearchParams })
             .map(res => {
-            this.putTokenToLocalStorage(res.text(), username);
-            return res;
-        });
+                if (res.text().length > 0) {
+                    this.putTokenToLocalStorage(res.text(), username);
+                    return res;
+                } else {
+                    return "";
+                }
+            });
     }
 
     private putTokenToLocalStorage(token: string, username:string) {

@@ -42,7 +42,10 @@ export class CommentsComponent implements OnInit {
             this.Comments = values.json() as Array<UserComment>;
             console.log(this.Comments);
         });
-        
+
+
+
+
         this._hubConnection = new HubConnection('http://localhost:4200/commentsPublisher');
 
         this._hubConnection.on('Send', (data: any) => {
@@ -58,12 +61,6 @@ export class CommentsComponent implements OnInit {
             .catch(err => {
                 console.log('Error while establishing connection')
             });
-    }
-    
-
-    onEnter(value: string) {
-        this.commentText = value;
-        console.log(this.commentText);
     }
 
     send() {

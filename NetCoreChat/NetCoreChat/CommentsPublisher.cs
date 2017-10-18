@@ -10,7 +10,7 @@ namespace App.Comments.Web
     {
 		public Task PublishReport(string data)
 		{
-			return Clients.All.InvokeAsync("Send", data);
+			return Clients.All.InvokeAsync("OnCommentsPublisher", data);
 		}
 	}
 }

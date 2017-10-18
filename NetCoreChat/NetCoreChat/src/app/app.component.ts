@@ -14,10 +14,12 @@ export class AppComponent {
     userName: string = "";
     
     constructor(private authService: AuthenticationService, private router: Router) {
-        this.authService.checkUserName();
         this.authService.getLoggedInName.subscribe(name => this.changeName(name));
         this.authService.getLoggedInStatus.subscribe(status => this.changeStatus(status));
         this.userName = this.authService.getLoggedUserName();
+        if (this.userName.length > 0) {
+            this.isLogged = true;
+        }
     }
 
     private changeName(name: string): void {
