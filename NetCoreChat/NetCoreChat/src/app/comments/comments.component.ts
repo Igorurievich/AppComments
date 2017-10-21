@@ -60,14 +60,13 @@ export class CommentsComponent implements OnInit {
     send() {
         this.checkUser();
         const comment = new UserComment(this.commentTitle, this.commentText, this.loggedUserName, Date.now());
-        console.log(comment);
-        this.httpService.post('/api/comments/NewComment', comment).subscribe(res => {
-            console.log(res.status);
-        });
+        // console.log(comment);
+        // this.httpService.post('/api/comments/NewComment', comment).subscribe(res => {
+        //    console.log(res.status);
+        // });
 
-
-        this._hubConnection.send('Send', this.commentText);
-        this.messages.push(this.commentText);
+        this._hubConnection.invoke('Send', comment);
+        this.Comments.push(comment);
 
         console.log(this.messages);
     }

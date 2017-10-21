@@ -1,16 +1,22 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using App.Comments.Common.Interfaces.Services;
+using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace App.Comments.Web
 {
     public class CommentsPublisher : Hub
     {
-		public Task PublishReport(string data)
+		private readonly ICommentsService _commentsService;
+
+		public CommentsPublisher(ICommentsService commentsService)
 		{
-			return Clients.All.InvokeAsync("OnCommentsPublisher", data);
+			_commentsService = commentsService;
+		}
+
+		public Task Send(CommentDto newComment)
+		{
+			_commentsService.AddNewComment(newComment);
+			return Clients.All.InvokeAsync("Send", newComment);
 		}
 	}
 }
