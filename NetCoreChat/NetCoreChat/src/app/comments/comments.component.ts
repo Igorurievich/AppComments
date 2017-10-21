@@ -4,8 +4,8 @@ import { SocialUser } from 'angular4-social-login';
 import { AuthenticationService } from '../services/auth/auth.service';
 import { Http } from '@angular/http';
 import { UserComment } from './UserComment';
-import { HubConnection } from '@aspnet/signalr-client';
 import { User } from '../login/User';
+import { HubConnection } from "@aspnet/signalr-client/dist/src";
 
 @Component({
     selector: 'app-comments',
@@ -18,12 +18,11 @@ export class CommentsComponent implements OnInit {
 
     private _hubConnection: HubConnection;
     public async: any;
+    messages: string[] = [];
 
     private commentTitle: string;
     private commentText: string;
     private commentAutor: string;
-
-    messages: string[] = [];
 
     private Comments: Array<UserComment> = new Array<UserComment>();
 
@@ -43,6 +42,19 @@ export class CommentsComponent implements OnInit {
             console.log(this.Comments);
         });
 
+        this._hubConnection = new HubConnection('http://localhost:5000/commentsPublisher');
+        this._hubConnection.on('Send', (data: any) => {
+            const received = `Received: ${data}`;
+            this.messages.push(received);
+        });
+
+        this._hubConnection.start()
+            .then(() => {
+                console.log('Hub connection started');
+            })
+            .catch(err => {
+                console.log('Error while establishing connection', err);
+            });
     }
 
     send() {
