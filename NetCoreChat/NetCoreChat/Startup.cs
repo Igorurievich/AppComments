@@ -70,8 +70,12 @@ namespace NetCoreChat
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-
 			app.UseCors("AllowAny");
+			
+			app.UseCors(builder =>
+				builder.WithOrigins("http://example.com")
+					.AllowAnyHeader()
+				);
 
 			if (env.IsDevelopment())
 			{
@@ -84,7 +88,7 @@ namespace NetCoreChat
 				app.UseExceptionHandler("/Home/Error");
 			}
 
-			app.UseAuthentication();
+			//app.UseAuthentication();
 
 			app.UseWebSockets();
 

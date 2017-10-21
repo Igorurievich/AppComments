@@ -35,11 +35,8 @@ namespace NetCoreChat
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>().
-                  UseKestrel(options =>
-                  {
-                    options.Listen(IPAddress.Loopback, 5000);
-                  })
+                .UseStartup<Startup>()
+                .UseUrls("http://localhost:5000")
                 .Build();
     }
 }
