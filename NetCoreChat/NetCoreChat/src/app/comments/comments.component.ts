@@ -65,7 +65,8 @@ export class CommentsComponent implements OnInit {
             console.log(res.status);
         });
 
-        this._hubConnection.invoke('Send', this.commentText);
+
+        this._hubConnection.send('Send', this.commentText);
         this.messages.push(this.commentText);
 
         console.log(this.messages);
