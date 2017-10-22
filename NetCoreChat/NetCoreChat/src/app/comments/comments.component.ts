@@ -38,7 +38,10 @@ export class CommentsComponent implements OnInit {
 
     ngOnInit() {
         this.httpService.get('/api/comments/GetAllComments').subscribe(values => {
-            this.Comments = values.json() as Array<UserComment>;
+            const test = values.json();
+            for (var i = 0; i < values.json().length; i++) {
+                this.Comments.push(new UserComment(test[i].title, test[i].commentText, test[i].autor, test[i].postTime));
+            }
             console.log(this.Comments);
         });
 
@@ -60,10 +63,6 @@ export class CommentsComponent implements OnInit {
     send() {
         this.checkUser();
         const comment = new UserComment(this.commentTitle, this.commentText, this.loggedUserName, Date.now());
-        // console.log(comment);
-        // this.httpService.post('/api/comments/NewComment', comment).subscribe(res => {
-        //    console.log(res.status);
-        // });
 
         this._hubConnection.invoke('Send', comment);
         this.Comments.push(comment);
