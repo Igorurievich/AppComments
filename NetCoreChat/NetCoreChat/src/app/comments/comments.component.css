@@ -16,7 +16,7 @@
 #commentsShowArea {
     height: 80%;
     width: 50%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #sendButton {

@@ -33,7 +33,7 @@ namespace NetCoreChat.Controllers
 				Response.StatusCode = (int)HttpStatusCode.BadRequest;
 			}
 			var user = _authenticationService.GetUserByUserNameAndEmail(username, email);
-
+			return user.Email;
 			if (user != null)
 			{
 				return GenerateJWTBasedOnUser(user);
@@ -64,11 +64,35 @@ namespace NetCoreChat.Controllers
 		{
 			if (ModelState.IsValid && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(email))
 			{
-				var user = new ApplicationUser { UserName = username, Email = email, Password = password };
-				var result = _authenticationService.Register(user);
-				if (result)
+				var checkUser = _authenticationService.GetUserByUserNameAndEmail(username, email);
+				if (checkUser == null)
 				{
-					return true;
+					var user = new ApplicationUser { UserName = username, Email = email, Password = password };
+					var result = _authenticationService.Register(user);
+					if (result)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		public bool RegisterWithFacebook([FromForm]string username, [FromForm]string email)
+		{
+			if (ModelState.IsValid && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(email))
+			{
+				var checkUser = _authenticationService.GetUserByUserNameAndEmail(username, email);
+				if (checkUser == null)
+				{
+					var user = new ApplicationUser { UserName = username, Email = email };
+					var result = _authenticationService.Register(user);
+					if (result)
+					{
+						return true;
+					}
 				}
 			}
 			return false;

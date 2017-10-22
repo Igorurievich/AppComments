@@ -32,6 +32,7 @@ export class AppComponent {
 
     private changeStatus(status: boolean): void {
         this.isLogged = status;
+        this.router.navigate(['comments']);
     }
 
     ngOnInit() {

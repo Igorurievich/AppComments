@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from "../services/auth/auth.service";
-import { Router } from "@angular/router";
+import { AuthenticationService } from '../services/auth/auth.service';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -15,19 +15,19 @@ export class SignupComponent implements OnInit {
     private email: string;
 
     constructor(private authService: AuthenticationService, private router: Router) {
-        
+
     }
 
     ngOnInit() {
-        
+
     }
 
-    register(e) {
+    register() {
+        this.authService.register(this.username, this.password, this.email);
+    }
 
-        this.authService.register(this.username, this.password, this.email).subscribe(data => {
-            if (data.text().length != 0) {
-                this.router.navigate(["comments"]);
-            }
-        });
+    signUpWithFB() {
+        console.log('fbgo');
+        this.authService.registerWithFacebook();
     }
 }
