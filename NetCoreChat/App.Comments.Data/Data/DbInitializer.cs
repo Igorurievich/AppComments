@@ -1,8 +1,6 @@
 ﻿using App.Comments.Common.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace App.Comments.Data.Data
 {
@@ -19,27 +17,25 @@ namespace App.Comments.Data.Data
                 return;
             }
 
-            var comments = new Comment[]
-            {
-                new Comment{Title="Hello World 1 title", Description = "Hello World 1 description"},
-                new Comment{Title="Hello World 2 title", Description = "Hello World 2 description"},
-                new Comment{Title="Hello World 3 title", Description = "Hello World 3 description"},
-            };
+            ApplicationUser user = new ApplicationUser();
+			user.UserName = "admin";
+			user.Password = "admin";
+			user.Email = "admin@example.com";
 
-            foreach (var comment in comments)
+			context.Users.Add(user);
+			user.Comments = new List<Comment>();
+
+			for (int i = 0; i < 50; i++)
+			{
+				user.Comments.Add(new Comment { Title = "Hello World " + i + " title", CommentText = "Hello World " + i + " description", ApplicationUser = user });
+			}
+
+            foreach (var comment in user.Comments)
             {
                 context.Comments.Add(comment);
             }
-            context.SaveChanges();
 
-
-            ApplicationUser user = new ApplicationUser();
-            user.Comments = new List<Comment>();
-            user.Comments.Add(comments.FirstOrDefault());
-
-            comments.FirstOrDefault().ApplicationUser = user;
-
-            context.SaveChanges();
+			context.SaveChanges();
         }
     }
 }

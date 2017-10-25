@@ -1,0 +1,33 @@
+<div class="center">
+    <form (submit)="register()" id="signUpForm">
+        <div class="input">
+            <label for="uname">Username:</label>
+            <input type="text"
+                   [(ngModel)]="username"
+                   name="uname" />
+        </div>
+        <div class="input">
+            <label for="pwd">Password:</label>
+            <input type="password" 
+                   [(ngModel)]="password"
+                   name="pwd" />
+        </div>
+        <div class="input">
+            <label for="email">Email:</label>
+            <input type="email" 
+                   [(ngModel)]="email"
+                   name="email" />
+        </div>
+        <div class="input">
+            <input id="registerBtn"
+                   class="btn"
+                   type="submit"
+                   value="Register" />
+        </div>
+    </form>
+    <button id="socialFb"
+            class="btn btn-social-icon btn-facebook"
+            (click)="signUpWithFB()">
+            <span class="fa fa-facebook"></span>
+    </button>
+</div>

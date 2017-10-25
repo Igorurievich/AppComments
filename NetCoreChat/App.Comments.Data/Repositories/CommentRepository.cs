@@ -2,6 +2,7 @@
 using App.Comments.Common.Entities;
 using App.Comments.Common.Interfaces.Repositories;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Comments.Data.Repositories
 {
@@ -29,12 +30,14 @@ namespace App.Comments.Data.Repositories
 
         public IEnumerable<Comment> GetAll()
         {
-            return _dbContext.Comments.AsEnumerable();
+            return _dbContext.Comments
+            .Include(appUser => appUser.ApplicationUser)
+            .AsEnumerable();
         }
 
-        public Comment GetCommentById(uint id)
+        public Comment GetCommentByUserName(string UserName)
         {
-            return _dbContext.Comments.FirstOrDefault(x => x.ID == id);
+            return _dbContext.Comments.FirstOrDefault(x => x.ApplicationUser.UserName == UserName);
         }
 
         public void UpdateComment(Comment comment)

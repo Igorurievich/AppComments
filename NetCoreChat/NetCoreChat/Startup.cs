@@ -1,82 +1,109 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreChat.Data;
 using NetCoreChat.Services;
-using App.Comments.Common.Entities;
 using App.Comments.Data;
 using App.Comments.Data.Repositories;
 using App.Comments.Common.Interfaces.Repositories;
+using App.Comments.Common.Interfaces.Services;
+using App.Comments.Common.Services;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Routing;
+using AutoMapper;
+using App.Comments.Web;
 
 namespace NetCoreChat
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		private IHostingEnvironment CurrentEnvironment { get; set; }
+		public IConfiguration Configuration { get; }
 
-        public IConfiguration Configuration { get; }
+		public Startup(IConfiguration configuration, IHostingEnvironment env)
+		{
+			Configuration = configuration;
+			CurrentEnvironment = env;
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<CommentsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("appsettings-Shared.json", optional: false)
+				.AddJsonFile("secrets.json", optional: false)
+				.AddEnvironmentVariables();
+			Configuration = builder.Build();
+		}
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<CommentsContext>()
-                .AddDefaultTokenProviders();
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddCors(options => options.AddPolicy("AllowAny", x => {
+				x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+			}));
 
-            services
-                .AddMvc()
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+			services.AddDbContext<CommentsContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
+			services.AddTransient(typeof(ICommentRepository), typeof(CommentRepository));
+			services.AddTransient(typeof(IApplicationUserRepository), typeof(UserRepository));
 
-            services.AddTransient(typeof(ICommentRepository), typeof(CommentRepository));
+			services.AddTransient(typeof(ICommentsService), typeof(CommentsService));
+			services.AddTransient(typeof(IAuthenticationService), typeof(AuthenticationService));
 
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+			services.AddAuthentication().AddFacebook(facebookOptions =>
+			{
+				facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+				facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+			});
 
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddMvc();
-        }
+			services.AddTransient<IEmailSender, EmailSender>();
+			services.AddMvc().AddJsonOptions(options =>
+			{
+				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			});
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+			services.AddSignalR();
 
-            app.UseStaticFiles();
+			services.AddAutoMapper();
+		}
 
-            app.UseAuthentication();
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			app.UseCors("AllowAny");
 
-            app.UseWebSockets();
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseBrowserLink();
+				app.UseDatabaseErrorPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Home/Error");
+			}
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+			//app.UseAuthentication();
 
-            app.UseSignalR();
-        }
-    }
+			app.UseWebSockets();
+
+			app.UseMvcWithDefaultRoute();
+			app.UseDefaultFiles();
+			app.UseStaticFiles();
+
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "DefaultApi",
+					template: "api/{controller}/{action}");
+			});
+
+			app.UseSignalR(routes =>  // <-- SignalR
+			{
+				routes.MapHub<CommentsPublisher>("commentsPublisher");
+			});
+
+			RouteBuilder routeBuilder = new RouteBuilder(app);
+		}
+	}
 }

@@ -1,0 +1,27 @@
+input[type=text], input[type=password], input[type=email] {
+    width: 100%;
+    padding: 8px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+}
+
+#registerBtn {
+    width: 90px;
+    float: left;
+}
+
+#loginForm {
+    float: left;
+}
+
+#socialFb {
+    float: right;
+    width: 100px;
+}
+
+.center {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+}

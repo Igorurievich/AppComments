@@ -1,0 +1,29 @@
+.footer {
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    height: 230px;
+    margin: 5px;
+    text-align: left;
+}
+
+#inputAreaPanel {
+    height: 100%;
+    width: 500px;
+    margin: auto;
+}
+
+#commentsShowArea {
+    height: 80%;
+    width: 50%;
+    overflow-y: auto;
+}
+
+#sendButton {
+    float: right;
+    padding: 2px 13px 2px 13px;
+}
+
+textarea {
+    resize: none;
+}

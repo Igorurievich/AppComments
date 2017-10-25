@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UserSecretsId>aspnet-NetCoreChat-97A9B4ED-2A16-4E2B-9DCC-D763D4D7CF81</UserSecretsId>
 	<UserSecretsId>User-Secret-ID</UserSecretsId>
-	<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,45 +12,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ClientApp\**" />
-    <Content Remove="ClientApp\**" />
-    <EmbeddedResource Remove="ClientApp\**" />
-    <None Remove="ClientApp\**" />
+    <Compile Remove="app-comments-web\**" />
+    <Content Remove="app-comments-web\**" />
+    <EmbeddedResource Remove="app-comments-web\**" />
+    <None Remove="app-comments-web\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="app\app.component.ts" />
-    <None Remove="app\comments\comments.component.ts" />
-    <None Remove="app\interfaces.ts" />
-    <None Remove="app\services\data.service.ts" />
-    <None Remove="app\services\feed.service.ts" />
+    <Content Remove="package-lock.json" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="AngularJS.Core" Version="1.6.5" />
     <PackageReference Include="AngularJS.Route" Version="1.6.5" />
-    <PackageReference Include="IdentityServer4" Version="2.0.0-preview4" />
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.0.1" />
     <PackageReference Include="jQuery" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNet.SignalR.JS" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha1-final" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Server" Version="0.2.0-preview2-22683" />
-    <PackageReference Include="Microsoft.AspNetCore.Sockets.Http" Version="1.0.0-alpha1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
 	<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
@@ -59,6 +46,7 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,13 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="app\app.component.ts" />
-    <TypeScriptCompile Include="app\app.routes.ts" />
-    <TypeScriptCompile Include="app\comments\comments.component.ts" />
-    <TypeScriptCompile Include="app\home\home.component.ts" />
-    <TypeScriptCompile Include="app\interfaces.ts" />
-    <TypeScriptCompile Include="app\services\data.service.ts" />
-    <TypeScriptCompile Include="app\services\feed.service.ts" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

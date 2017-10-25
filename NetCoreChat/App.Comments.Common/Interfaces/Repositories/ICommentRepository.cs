@@ -8,8 +8,7 @@ namespace App.Comments.Common.Interfaces.Repositories
         void AddComment(Comment comment);
         void UpdateComment(Comment comment);
         void DeleteComment(Comment comment);
-
-        Comment GetCommentById(uint id);
+        Comment GetCommentByUserName(string UserName);
         IEnumerable<Comment> GetAll();
     }
 }
