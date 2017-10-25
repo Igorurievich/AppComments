@@ -22,8 +22,6 @@ export class AuthenticationService {
         this.token = currentUser && currentUser.token;
     }
 
-
-
     private logInWithFB(): Promise<any> {
         return this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
             if (data) {
@@ -32,17 +30,33 @@ export class AuthenticationService {
         });
     }
 
-    loginWithFBOnServer() {
-        console.log('fbServer');
-        const result = this.logInWithFB().then( () => {
-            const urlSearchParams = new URLSearchParams();
-            urlSearchParams.append('username', this.user.firstName);
-            urlSearchParams.append('email', this.user.email);
-            console.log(urlSearchParams);
-            this.httpService.get('/api/account/LogInUserWithFacebook', { search: urlSearchParams })
+    private logInuserWithFB(urlSearchParams: URLSearchParams) {
+        this.httpService.get('/api/account/LogInUserWithFacebook', { search: urlSearchParams })
             .toPromise()
             .then(res => {
                 this.putTokenToLocalStorage(res.text(), this.user.firstName);
+            });
+    }
+
+    loginWithFBOnServer() {
+        this.logInWithFB().then(() => {
+            const urlSearchParams = new URLSearchParams();
+            urlSearchParams.append('username', this.user.firstName);
+            urlSearchParams.append('email', this.user.email);
+            console.log('registerwithfb:', urlSearchParams);
+            this.logInuserWithFB(urlSearchParams);
+        });
+    }
+
+    registerWithFacebook() {
+        this.logInWithFB().then(() => {
+            const urlSearchParams = new URLSearchParams();
+            urlSearchParams.append('username', this.user.firstName);
+            urlSearchParams.append('email', this.user.email);
+            console.log('registerwithfb:', urlSearchParams);
+            this.httpService.post('/api/account/RegisterWithFacebook', urlSearchParams).toPromise().then(res => {
+                console.log("RES: ", res);
+                this.logInuserWithFB(urlSearchParams);
             });
         });
     }
@@ -66,46 +80,34 @@ export class AuthenticationService {
             });
     }
 
-    register(username: string, password: string, email: string): any {
+    register(username: string, password: string, email: string) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
         urlSearchParams.append('email', email);
-
-        return this.httpService.post('/api/account/Register', urlSearchParams)
-            .map(res => {
-            return res;
+        console.log(urlSearchParams);
+        this.httpService.post('/api/account/Register', urlSearchParams).toPromise().then(res => {
+            this.login(username, password);
+        }).catch(err => {
+            alert(err);
         });
     }
 
-    registerWithFacebook() {
-        this.logInWithFB().then( () => {
-            const urlSearchParams = new URLSearchParams();
-
-            urlSearchParams.append('username', this.user.firstName);
-            urlSearchParams.append('email', this.user.email);
-            console.log('registerwithfb:', urlSearchParams);
-
-            this.httpService.post('/api/account/RegisterWithFacebook', urlSearchParams).toPromise().then(res => {
-                console.log(res);
-                this.loginWithFBOnServer();
-            });
-        });
-    }
+   
 
     login(username: string, password: string): any {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
-        return this.httpService.get('/api/account/LogInUser', { search: urlSearchParams })
-            .map(res => {
-                if (res.text().length > 0) {
-                    this.putTokenToLocalStorage(res.text(), username);
-                    return res;
-                } else {
-                    return '';
-                }
-            });
+        
+        return this.httpService.get('/api/account/LogInUser', { search: urlSearchParams }).toPromise().then(res => {
+            if (res.text().length > 0) {
+                this.putTokenToLocalStorage(res.text(), username);
+                return res;
+            } else {
+                return '';
+            }
+        });
     }
 
     private putTokenToLocalStorage(token: string, username: string) {
@@ -116,10 +118,11 @@ export class AuthenticationService {
             localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
             this.getLoggedInName.emit(username);
             this.getLoggedInStatus.emit(true);
+            this.router.navigate(['comments']);
         }
     }
 
-    logout(): void {
+    logout() {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');

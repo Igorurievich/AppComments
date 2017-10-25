@@ -23,14 +23,11 @@ export class LoginComponent implements OnInit {
     }
 
     loginUser() {
-        this.authService.login(this.userName, this.password).subscribe(data => {
-            this.router.navigate(['comments']);
-        });
+        this.authService.login(this.userName, this.password);
     }
 
     signInWithFB() {
         console.log("fb");
         this.authService.loginWithFBOnServer();
-        this.router.navigate(['comments']);
     }
 }

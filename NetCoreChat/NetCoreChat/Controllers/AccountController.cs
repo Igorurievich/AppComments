@@ -65,8 +65,9 @@ namespace NetCoreChat.Controllers
 			if (ModelState.IsValid && !string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(email))
 			{
 				var checkUser = _authenticationService.GetUserByUserNameAndEmail(username, email);
-				if (checkUser == null)
-				{
+				var chekedUserName = _authenticationService.GetUserByUserName(username);
+				if (checkUser == null && chekedUserName == null)
+				{ 
 					var user = new ApplicationUser { UserName = username, Email = email, Password = password };
 					var result = _authenticationService.Register(user);
 					if (result)

@@ -6,8 +6,8 @@ input[type=text], input[type=password], input[type=email] {
     border: 1px solid #ccc;
 }
 
-input[type=submit] {
-    width: 70px;
+#registerBtn {
+    width: 90px;
     float: left;
 }
 
@@ -18,9 +18,6 @@ input[type=submit] {
 #socialFb {
     float: right;
     width: 100px;
-    margin-top: 35px;
-    position: absolute;
-    margin-left: 50px;
 }
 
 .center {
