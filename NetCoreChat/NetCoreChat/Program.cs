@@ -37,11 +37,6 @@ namespace NetCoreChat
 			WebHost.CreateDefaultBuilder(args)
 			.UseStartup<Startup>()
 			.UseStartup<Startup>()
-			.UseKestrel(options =>
-				  {
-					  options.Listen(IPAddress.Loopback, 5000);
-				  })
-
-				.Build();
+			.UseKestrel().Build();
 	}
 }

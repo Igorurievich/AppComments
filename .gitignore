@@ -288,4 +288,3 @@ __pycache__/
 *.xsd.cs
 NetCoreChat/NetCoreChat/secrets.json
 NetCoreChat/NetCoreChat/appsettings-Shared.json
-NetCoreChat/NetCoreChat/wwwroot/

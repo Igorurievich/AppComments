@@ -22,6 +22,10 @@
     <Content Remove="package-lock.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AngularJS.Core" Version="1.6.5" />
@@ -52,6 +56,10 @@
   <ItemGroup>
     <ProjectReference Include="..\App.Comments.Common\App.Comments.Common.csproj" />
     <ProjectReference Include="..\App.Comments.Data\App.Comments.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
