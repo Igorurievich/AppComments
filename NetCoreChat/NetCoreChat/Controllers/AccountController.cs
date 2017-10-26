@@ -33,7 +33,6 @@ namespace NetCoreChat.Controllers
 				Response.StatusCode = (int)HttpStatusCode.BadRequest;
 			}
 			var user = _authenticationService.GetUserByUserNameAndEmail(username, email);
-			return user.Email;
 			if (user != null)
 			{
 				return GenerateJWTBasedOnUser(user);
