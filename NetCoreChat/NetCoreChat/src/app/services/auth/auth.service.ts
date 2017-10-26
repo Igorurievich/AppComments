@@ -43,7 +43,6 @@ export class AuthenticationService {
             const urlSearchParams = new URLSearchParams();
             urlSearchParams.append('username', this.user.firstName);
             urlSearchParams.append('email', this.user.email);
-            console.log('registerwithfb:', urlSearchParams);
             this.logInuserWithFB(urlSearchParams);
         });
     }
@@ -53,9 +52,7 @@ export class AuthenticationService {
             const urlSearchParams = new URLSearchParams();
             urlSearchParams.append('username', this.user.firstName);
             urlSearchParams.append('email', this.user.email);
-            console.log('registerwithfb:', urlSearchParams);
             this.httpService.post('/api/account/RegisterWithFacebook', urlSearchParams).toPromise().then(res => {
-                console.log("RES: ", res);
                 this.logInuserWithFB(urlSearchParams);
             });
         });
@@ -85,7 +82,6 @@ export class AuthenticationService {
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
         urlSearchParams.append('email', email);
-        console.log(urlSearchParams);
         this.httpService.post('/api/account/Register', urlSearchParams).toPromise().then(res => {
             alert(res.json());
             this.login(username, password);

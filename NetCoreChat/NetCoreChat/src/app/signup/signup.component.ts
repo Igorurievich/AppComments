@@ -27,7 +27,6 @@ export class SignupComponent implements OnInit {
     }
 
     signUpWithFB() {
-        console.log('fbgo');
         this.authService.registerWithFacebook();
     }
 }

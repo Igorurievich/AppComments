@@ -53,9 +53,7 @@ export class CommentsComponent implements OnInit {
                 new UserComment(newComment.title, newComment.commentText, newComment.autor, newComment.postTime));
                 this.refreshComments();
         });
-
         this._hubConnection.start();
-
         this.control = document.getElementById('commentsShowArea');
     }
 
