@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
     }
 
     signInWithFB() {
-        console.log("fb");
         this.authService.loginWithFBOnServer();
     }
 }

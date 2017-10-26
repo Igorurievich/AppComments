@@ -87,6 +87,7 @@ export class AuthenticationService {
         urlSearchParams.append('email', email);
         console.log(urlSearchParams);
         this.httpService.post('/api/account/Register', urlSearchParams).toPromise().then(res => {
+            alert(res.json());
             this.login(username, password);
         }).catch(err => {
             alert(err);

@@ -7,10 +7,9 @@ using AutoMapper;
 namespace App.Comments.Web.Controllers
 {
 	[Route("api/[controller]/[action]")]
-	public class CommentsController : Controller
+	public class CommentsController
 	{
 		private readonly ICommentsService _commentsService;
-		private readonly IAuthenticationService _authenticationService;
 		private readonly IMapper _mapper;
 		public CommentsController(
 			ICommentsService commentsService,

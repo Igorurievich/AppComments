@@ -54,13 +54,7 @@ export class CommentsComponent implements OnInit {
                 this.refreshComments();
         });
 
-        this._hubConnection.start()
-            .then(() => {
-                console.log('Hub connection started');
-            })
-            .catch(err => {
-                console.log('Error while establishing connection', err);
-            });
+        this._hubConnection.start();
 
         this.control = document.getElementById('commentsShowArea');
     }

@@ -54,8 +54,4 @@
     <ProjectReference Include="..\App.Comments.Data\App.Comments.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>

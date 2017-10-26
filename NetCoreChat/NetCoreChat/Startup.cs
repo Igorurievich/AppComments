@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreChat.Services;
 using App.Comments.Data;
 using App.Comments.Data.Repositories;
 using App.Comments.Common.Interfaces.Repositories;
@@ -56,7 +55,6 @@ namespace NetCoreChat
 				facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
 			});
 
-			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddMvc().AddJsonOptions(options =>
 			{
 				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -82,8 +80,6 @@ namespace NetCoreChat
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
-
-			//app.UseAuthentication();
 
 			app.UseWebSockets();
 
