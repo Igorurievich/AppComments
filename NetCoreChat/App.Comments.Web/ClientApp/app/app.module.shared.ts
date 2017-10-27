@@ -38,6 +38,11 @@ const appRoutes: Routes = [
     {
         path: 'signup',
         component: SignupComponent
+    },
+    {
+        path: '**',
+        canActivate: [AuthguardGuard],
+        component: CommentsComponent
     }
 ];
 

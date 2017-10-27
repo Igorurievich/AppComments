@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 </ul>
-</div>
+     </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav navbar-right'>
@@ -29,7 +29,6 @@
                         <span class='glyphicon glyphicon-user'></span> Log Out
                     </a>
                 </li>
-
                 <li *ngIf="!isLogged" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/signup']">
                         <span class='glyphicon glyphicon-user'></span> Sign Up

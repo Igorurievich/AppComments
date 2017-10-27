@@ -39,11 +39,6 @@ export class CommentsComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (isPlatformBrowser(this.platformId)) {
-            this.checkUser();
-            this.authService.getLoggedInName.toPromise().then(data => this.changeName(name));
-        }
-
         this.httpService.get(this.baseUrl + 'api/comments/GetAllComments').subscribe(values => {
             const jsonComments = values.json();
             for (let i = 0; i < values.json().length; i++) {
