@@ -19,7 +19,6 @@ export class CommentsComponent implements OnInit {
 
     private _hubConnection: HubConnection;
     public async: any;
-    messages: string[] = [];
 
     private commentTitle: string;
     private commentText: string;
@@ -28,6 +27,8 @@ export class CommentsComponent implements OnInit {
 
     Comments: Array<UserComment> = new Array<UserComment>();
     control: any;
+
+    subscriptionName : any;
 
     constructor(private authService: AuthenticationService,
         private httpService: Http, @Inject(PLATFORM_ID) private platformId: Object, @Inject('BASE_URL') baseUrl: string) {
@@ -38,7 +39,7 @@ export class CommentsComponent implements OnInit {
         this.loggedUserName = name;
     }
 
-    ngOnInit() {
+    private getComments() {
         this.httpService.get(this.baseUrl + 'api/comments/GetAllComments').subscribe(values => {
             const jsonComments = values.json();
             for (let i = 0; i < values.json().length; i++) {
@@ -47,14 +48,25 @@ export class CommentsComponent implements OnInit {
             }
             this.refreshComments();
         });
+    }
 
+    private startSignalR() {
         this._hubConnection = new HubConnection(this.baseUrl + 'commentsPublisher');
         this._hubConnection.on('Send', (newComment: any) => {
             this.Comments.push(
                 new UserComment(newComment.title, newComment.commentText, newComment.autor, newComment.postTime));
-                this.refreshComments();
+            this.refreshComments();
         });
         this._hubConnection.start();
+    }
+
+    ngOnInit() {
+        this.checkUser();
+        this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
+
+        this.getComments();
+        this.startSignalR();
+
         this.control = document.getElementById('commentsShowArea');
     }
 

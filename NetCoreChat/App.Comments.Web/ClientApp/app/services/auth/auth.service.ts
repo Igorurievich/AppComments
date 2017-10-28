@@ -67,15 +67,10 @@ export class AuthenticationService {
     }
 
     public getLoggedUserName(): string {
-        let curUser: any;
-        const token = localStorage.getItem('currentUser').toString()
+        const token = localStorage.getItem('currentUser');
         if (token) {
-            curUser = JSON.parse(token);
-            if (curUser == null) {
-                return '';
-            }
+            return JSON.parse(token).username;
         }
-        return curUser.username;
     }
 
     public checkUserName(): any {

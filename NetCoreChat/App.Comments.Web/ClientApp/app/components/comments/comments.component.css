@@ -6,6 +6,11 @@
     margin: 5px;
     text-align: left;
 }
+th, td {
+    border: 1px solid gray;
+    padding: 5px;
+    background-color: whitesmoke;
+}
 
 #inputAreaPanel {
     height: 100%;
@@ -14,9 +19,9 @@
 }
 
 #commentsShowArea {
-    height: 80%;
-    width: 50%;
-    overflow-y: auto;
+    height: 850px;
+    width: 60%;
+    overflow-y: scroll;
 }
 
 #sendButton {

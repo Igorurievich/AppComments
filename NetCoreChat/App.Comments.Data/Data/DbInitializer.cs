@@ -11,7 +11,6 @@ namespace App.Comments.Data.Data
         {
             context.Database.EnsureCreated();
 
-
             if (context.Comments.Any())
             {
                 return;

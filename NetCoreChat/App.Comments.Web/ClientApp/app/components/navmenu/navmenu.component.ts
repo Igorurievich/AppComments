@@ -12,8 +12,13 @@ export class NavMenuComponent implements OnInit {
     loggedUserName = '';
     isLogged = false;
 
-    constructor(private authService: AuthenticationService, @Inject(PLATFORM_ID) private platformId: Object) {
+    subscriptionStatus: any;
+    subscriptionName: any;
 
+    constructor(private authService: AuthenticationService, @Inject(PLATFORM_ID) private platformId: Object) {
+        if (isPlatformBrowser(this.platformId)) {
+            this.checkUser();
+        }
     }
 
     private changeName(name: string): void {
@@ -26,9 +31,10 @@ export class NavMenuComponent implements OnInit {
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {
+            this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
+            this.subscriptionStatus = this.authService.getLoggedInStatus.subscribe((item: boolean) => this.changeStatus(item));
+
             this.checkUser();
-            this.authService.getLoggedInName.toPromise().then(data => this.changeName(name));
-            this.authService.getLoggedInStatus.toPromise().then(status => this.changeStatus(status));
         }
     }
 
@@ -38,7 +44,13 @@ export class NavMenuComponent implements OnInit {
                 this.authService.logout();
             } else {
                 this.loggedUserName = this.authService.getLoggedUserName();
+                this.isLogged = true;
+                console.log(this.loggedUserName);
             }
         });
+    }
+
+    logOut() {
+        this.authService.logout();
     }
 }

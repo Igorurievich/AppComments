@@ -1,14 +1,21 @@
-<p>
-  
-</p>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
- <div class="panel panel-default" id="commentsShowArea">
-         <tr *ngFor="let comment of Comments" >
-             <h4 style="text-align:left;float:left;">{{comment.Autor}}:</h4>
-             <h4 style="text-align:right;">{{comment.Title}}</h4>
-             <p>{{comment.CommentText}}</p>
-         </tr>
-  </div>
+<div id="commentsShowArea"> 
+    <div class="panel panel-default">
+         <div class="panel-heading">Comments</div>
+         <div class="panel-body">
+             <table>
+                 <tr *ngFor="let comment of Comments">
+                     <td>
+                         <h4>
+                             {{comment.Autor}}:{{comment.Title}}<br />
+                             <br />
+                             {{comment.CommentText}}
+                         </h4>
+                     </td>
+                 </tr>
+             </table>
+         </div>
+      </div>
+    </div>
   <div class="footer">
       <div class="panel panel-default" id="inputAreaPanel">
           <div class="panel-heading">

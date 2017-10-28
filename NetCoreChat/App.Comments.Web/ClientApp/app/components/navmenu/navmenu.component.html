@@ -18,27 +18,12 @@
      </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
-            <ul class='nav navbar-nav navbar-right'>
-                <li *ngIf="isLogged" [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/signup']">
-                        <span class='glyphicon glyphicon-user'></span> Hello, {{userName}}
-                    </a>
-                </li>
-                <li *ngIf="isLogged" [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/login']">
-                        <span class='glyphicon glyphicon-user'></span> Log Out
-                    </a>
-                </li>
-                <li *ngIf="!isLogged" [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/signup']">
-                        <span class='glyphicon glyphicon-user'></span> Sign Up
-                    </a>
-                </li>
-                <li *ngIf="!isLogged" [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/login']">
-                        <span class='glyphicon glyphicon-user'></span> Log In
-                    </a>
-                </li>
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="isLogged"><a routerLink=""><span class="glyphicon glyphicon-user"></span>Hello, {{loggedUserName}}</a></li>
+                <li *ngIf="isLogged"><a routerLink="" (click)="logOut()"><span class="glyphicon glyphicon-user"></span>Log Out</a></li>
+
+                <li *ngIf="!isLogged"><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+                <li *ngIf="!isLogged"><a routerLink="/login"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
             </ul>
         </div>
     </div>
@@ -51,12 +36,12 @@
         <ul class="nav navbar-nav">
             <li><a routerLink="/comments">Comments</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li *ngIf="isLogged"><a><span class="glyphicon glyphicon-user"></span>Hello, {{userName}}</a></li>
-            <li *ngIf="isLogged"><a (click)="logOut()"><span class="glyphicon glyphicon-user"></span>Log Out</a></li>
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="isLogged"><a routerLink=""><span class="glyphicon glyphicon-user"></span>Hello, {{loggedUserName}}</a></li>
+                <li *ngIf="isLogged"><a routerLink="" (click)="logOut()"><span class="glyphicon glyphicon-user"></span>Log Out</a></li>
 
-            <li *ngIf="!isLogged"><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-            <li *ngIf="!isLogged"><a routerLink="/login"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
-        </ul>
+                <li *ngIf="!isLogged"><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+                <li *ngIf="!isLogged"><a routerLink="/login"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
+            </ul>
     </div>
 </nav>-->
