@@ -66,7 +66,7 @@ export class AuthenticationService {
         });
     }
 
-    public getLoggedUserName(): string {
+    public getLoggedUserName(): any {
         const token = localStorage.getItem('currentUser');
         if (token) {
             return JSON.parse(token).username;
@@ -126,7 +126,7 @@ export class AuthenticationService {
 
     logout() {
         // clear token remove user from local storage to log user out
-        this.token = null;
+        this.token = "";
         localStorage.removeItem('currentUser');
         this.getLoggedInStatus.emit(false);
         this.router.navigate(['login']);
