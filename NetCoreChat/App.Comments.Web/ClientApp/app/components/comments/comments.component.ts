@@ -20,10 +20,10 @@ export class CommentsComponent implements OnInit {
     private _hubConnection: HubConnection;
     public async: any;
 
-    private commentTitle: string;
-    private commentText: string;
-    private commentAutor: string;
-    private baseUrl: string;
+    commentTitle: string;
+    commentText: string;
+    commentAutor: string;
+    baseUrl: string;
 
     Comments: Array<UserComment> = new Array<UserComment>();
     control: any;

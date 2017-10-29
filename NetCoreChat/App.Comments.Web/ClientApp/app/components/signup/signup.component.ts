@@ -10,9 +10,9 @@ import { AuthenticationService } from "../../services/auth/auth.service";
 })
 export class SignupComponent implements OnInit {
 
-    private username: string;
-    private password: string;
-    private email: string;
+    username: string;
+    password: string;
+    email: string;
 
     constructor(private authService: AuthenticationService, private router: Router) {
 
