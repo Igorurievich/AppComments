@@ -5,6 +5,7 @@ import {
     Attribute, OnChanges, SimpleChanges, Input, OnInit
 } from '@angular/core';
 import { AuthenticationService } from "../../services/auth/auth.service";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
     selector: 'app-login',
@@ -16,13 +17,22 @@ export class LoginComponent implements OnInit {
     userName: string;
     password: string;
 
+
+
     constructor(private authService: AuthenticationService, private router: Router) {
+      
     }
 
     ngOnInit() {
     }
 
+    selectedNavItem(item: string) {
+        console.log('selected nav item ' + item);
+        this.authService.changeStatusName(item);
+    }
+
     loginUser() {
+        //this.selectedNavItem('55');
         this.authService.login(this.userName, this.password);
     }
 
