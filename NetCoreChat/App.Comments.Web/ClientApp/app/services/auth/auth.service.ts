@@ -4,9 +4,10 @@ import { FacebookLoginProvider } from 'angular4-social-login';
 import { AuthService } from 'angular4-social-login';
 import { SocialUser, AuthServiceConfig } from 'angular4-social-login';
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
-import { EventEmitter, Output } from '@angular/core';
+import { Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class AuthenticationService {
@@ -15,8 +16,15 @@ export class AuthenticationService {
     public token: string;
     private baseUrl: string;
 
-    @Output() getLoggedInName: EventEmitter<string> = new EventEmitter();
-    @Output() getLoggedInStatus: EventEmitter<boolean> = new EventEmitter();
+
+    private _statusNameSource = new BehaviorSubject<string>('');
+    statusNameItem$ = this._statusNameSource.asObservable();
+
+    private _statusSource = new BehaviorSubject<boolean>(false);
+    statusItem$ = this._statusSource.asObservable();
+
+    //@Output() getLoggedInName: EventEmitter<string> = new EventEmitter();
+    //@Output() getLoggedInStatus: EventEmitter<boolean> = new EventEmitter();
 
     constructor(private httpService: Http, private authService: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, @Inject('BASE_URL') baseUrl: string) {
         if (isPlatformBrowser(this.platformId)) {
@@ -28,6 +36,14 @@ export class AuthenticationService {
             }
             this.token = currentUser && currentUser.token;
         }
+    }
+
+    changeStatusName(statusName: string) {
+        this._statusNameSource.next(statusName);
+    }
+
+    changeStatus(status: boolean) {
+        this._statusSource.next(status);
     }
 
     private logInWithFB(): Promise<any> {
@@ -118,8 +134,13 @@ export class AuthenticationService {
             this.token = token;
             // store username and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-            this.getLoggedInName.emit(username);
-            this.getLoggedInStatus.emit(true);
+            //this.getLoggedInName.emit(username);
+            //this.getLoggedInStatus.emit(true);
+
+            this.changeStatusName(username);
+            this.changeStatus(true);
+
+
             this.router.navigate(['comments']);
         }
     }
@@ -128,7 +149,8 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         this.token = "";
         localStorage.removeItem('currentUser');
-        this.getLoggedInStatus.emit(false);
+        //this.getLoggedInStatus.emit(false);
+        this.changeStatus(false);
         this.router.navigate(['login']);
     }
 }

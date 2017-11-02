@@ -7,6 +7,7 @@ import { User } from '../login/User';
 import { HubConnection } from '@aspnet/signalr-client/dist/src';
 import { AuthenticationService } from "../../services/auth/auth.service";
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
     selector: 'app-comments',
@@ -25,6 +26,8 @@ export class CommentsComponent implements OnInit {
     commentAutor: string;
     baseUrl: string;
 
+    subscription: Subscription;
+
     Comments: Array<UserComment> = new Array<UserComment>();
     control: any;
 
@@ -35,9 +38,9 @@ export class CommentsComponent implements OnInit {
         this.baseUrl = baseUrl;
     }
 
-    private changeName(name: string): void {
-        this.loggedUserName = name;
-    }
+    //private changeName(name: string): void {
+    //    this.loggedUserName = name;
+    //}
 
     private getComments() {
         this.httpService.get(this.baseUrl + 'api/comments/GetAllComments').subscribe(values => {
@@ -62,7 +65,9 @@ export class CommentsComponent implements OnInit {
 
     ngOnInit() {
         this.checkUser();
-        this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
+        //this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
+
+        this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.loggedUserName = item);
 
         this.getComments();
         this.startSignalR();

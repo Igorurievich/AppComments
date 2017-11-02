@@ -286,5 +286,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-NetCoreChat/NetCoreChat/secrets.json
-NetCoreChat/NetCoreChat/appsettings-Shared.json
+NetCoreChat/App.Comments.Web/secrets.json
+NetCoreChat/App.Comments.Web/appsettings-Shared.json

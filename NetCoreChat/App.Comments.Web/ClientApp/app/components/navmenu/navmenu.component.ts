@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthenticationService } from "../../services/auth/auth.service";
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
     selector: 'nav-menu',
@@ -12,12 +13,15 @@ export class NavMenuComponent implements OnInit {
     loggedUserName = '';
     isLogged = false;
 
-    subscriptionStatus: any;
-    subscriptionName: any;
+    subscriptionStatus: Subscription;
+    subscriptionName: Subscription;
+
+    item: number;
+    subscription: Subscription;
 
     constructor(private authService: AuthenticationService, @Inject(PLATFORM_ID) private platformId: Object) {
         if (isPlatformBrowser(this.platformId)) {
-            this.checkUser();
+            //this.checkUser();
         }
     }
 
@@ -31,10 +35,13 @@ export class NavMenuComponent implements OnInit {
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {
-            this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
-            this.subscriptionStatus = this.authService.getLoggedInStatus.subscribe((item: boolean) => this.changeStatus(item));
+            //this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
+            //this.subscriptionStatus = this.authService.getLoggedInStatus.subscribe((item: boolean) => this.changeStatus(item));
 
             this.checkUser();
+
+            this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.loggedUserName = item);
+            this.subscriptionStatus = this.authService.statusItem$.subscribe((item: boolean) => this.isLogged = item);
         }
     }
 
