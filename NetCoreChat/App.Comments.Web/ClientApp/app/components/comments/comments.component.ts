@@ -38,9 +38,9 @@ export class CommentsComponent implements OnInit {
         this.baseUrl = baseUrl;
     }
 
-    private changeName(name: string): void {
-        this.loggedUserName = name;
-    }
+    //private changeName(name: string): void {
+    //    this.loggedUserName = name;
+    //}
 
     private getComments() {
         this.httpService.get(this.baseUrl + 'api/comments/GetAllComments').subscribe(values => {
@@ -67,7 +67,7 @@ export class CommentsComponent implements OnInit {
         this.checkUser();
         //this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
 
-        this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.changeName(item));
+        this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.loggedUserName = item);
 
         this.getComments();
         this.startSignalR();

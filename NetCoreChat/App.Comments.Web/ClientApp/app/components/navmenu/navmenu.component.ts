@@ -40,8 +40,8 @@ export class NavMenuComponent implements OnInit {
 
             this.checkUser();
 
-            this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.changeName(item));
-            this.subscriptionStatus = this.authService.statusItem$.subscribe((item: boolean) => this.changeStatus(item));
+            this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.loggedUserName = item);
+            this.subscriptionStatus = this.authService.statusItem$.subscribe((item: boolean) => this.isLogged = item);
         }
     }
 

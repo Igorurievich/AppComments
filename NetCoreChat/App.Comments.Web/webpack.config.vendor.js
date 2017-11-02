@@ -46,7 +46,7 @@ module.exports = (env) => {
 			new webpack.ContextReplacementPlugin(
 			  /angular(\\|\/)core/,
 			  path.resolve(__dirname, '../ClientApp')
-			)
+			),
             new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)@angular/, path.join(__dirname, './ClientApp')), // Workaround for https://github.com/angular/angular/issues/14898
             new webpack.IgnorePlugin(/^vertx$/) // Workaround for https://github.com/stefanpenner/es6-promise/issues/100
         ]
