@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace App.Comments.Common.Services
+namespace App.Comments.Common.Helpers
 {
-    public class TestsService : ITestsService
+    class EFTestLogger
     {
 		
     }
 }
-s

@@ -8,8 +8,9 @@ namespace App.Comments.Data.Repositories
 {
     public class CommentRepository : ICommentRepository
     {
+		public Action<string> Log { get; set; }
 
-        private readonly CommentsContext _dbContext;
+		private readonly CommentsContext _dbContext;
 
         public CommentRepository(CommentsContext dbContext)
         {
