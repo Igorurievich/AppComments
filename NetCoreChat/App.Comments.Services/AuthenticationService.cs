@@ -2,7 +2,7 @@
 using App.Comments.Common.Entities;
 using App.Comments.Common.Interfaces.Repositories;
 
-namespace App.Comments.Common.Services
+namespace App.Comments.Services
 {
 	public class AuthenticationService : IAuthenticationService
 	{

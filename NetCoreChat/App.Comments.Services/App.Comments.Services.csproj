@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\App.Comments.Common\App.Comments.Common.csproj" />
+  </ItemGroup>
+
 </Project>

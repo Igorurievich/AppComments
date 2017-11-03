@@ -5,7 +5,7 @@ using App.Comments.Common.Interfaces.Services;
 using AutoMapper;
 using System.Linq;
 
-namespace App.Comments.Common.Services
+namespace App.Comments.Services
 {
     public class CommentsService : ICommentsService
     {

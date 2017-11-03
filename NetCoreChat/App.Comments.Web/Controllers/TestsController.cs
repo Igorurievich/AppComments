@@ -4,6 +4,6 @@ namespace App.Comments.Web.Controllers
 {
     public class TestsController : Controller
     {
-
+		
     }
 }
