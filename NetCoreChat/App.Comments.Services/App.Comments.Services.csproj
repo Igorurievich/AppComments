@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Comments.Common\App.Comments.Common.csproj" />
+    <ProjectReference Include="..\App.Comments.Data\App.Comments.Data.csproj" />
   </ItemGroup>
 
 </Project>

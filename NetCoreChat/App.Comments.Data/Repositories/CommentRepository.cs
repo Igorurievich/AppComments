@@ -16,6 +16,7 @@ namespace App.Comments.Data.Repositories
         public CommentRepository(CommentsContext dbContext)
         {
             _dbContext = dbContext;
+			_dbContext.Log = log => System.Diagnostics.Trace.Write(log);
         }
 
         public void AddComment(Comment comment)

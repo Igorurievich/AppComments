@@ -13,6 +13,7 @@ import { FacebookLoginProvider } from "angular4-social-login";
 import { SignupComponent } from "./components/signup/signup.component";
 import { CommentsComponent } from "./components/comments/comments.component";
 import { AuthguardGuard } from "./authguard.guard";
+import { TestsComponent } from "./components/tests/tests.component";
 
 const config = new AuthServiceConfig([
     {
@@ -40,10 +41,15 @@ const appRoutes: Routes = [
         component: SignupComponent
     },
     {
+        path: 'tests',
+        canActivate: [AuthguardGuard],
+        component: TestsComponent
+    },
+    {
         path: '**',
         canActivate: [AuthguardGuard],
         component: CommentsComponent
-    }
+    },
 ];
 
 @NgModule({
@@ -52,7 +58,8 @@ const appRoutes: Routes = [
         NavMenuComponent,
         LoginComponent,
         SignupComponent,
-        CommentsComponent
+        CommentsComponent,
+        TestsComponent
     ],
     imports: [
         CommonModule,

@@ -38,10 +38,6 @@ export class CommentsComponent implements OnInit {
         this.baseUrl = baseUrl;
     }
 
-    //private changeName(name: string): void {
-    //    this.loggedUserName = name;
-    //}
-
     private getComments() {
         this.httpService.get(this.baseUrl + 'api/comments/GetAllComments').subscribe(values => {
             const jsonComments = values.json();
@@ -65,13 +61,10 @@ export class CommentsComponent implements OnInit {
 
     ngOnInit() {
         this.checkUser();
-        //this.subscriptionName = this.authService.getLoggedInName.subscribe((item: string) => this.changeName(item));
-
         this.subscriptionName = this.authService.statusNameItem$.subscribe((item: string) => this.loggedUserName = item);
 
         this.getComments();
         this.startSignalR();
-
         this.control = document.getElementById('commentsShowArea');
     }
 

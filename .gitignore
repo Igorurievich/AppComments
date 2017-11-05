@@ -288,3 +288,4 @@ __pycache__/
 *.xsd.cs
 NetCoreChat/App.Comments.Web/secrets.json
 NetCoreChat/App.Comments.Web/appsettings-Shared.json
+NetCoreChat/App.Comments.Web/Media/

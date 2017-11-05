@@ -34,9 +34,13 @@
   <ItemGroup>
     <ProjectReference Include="..\App.Comments.Common\App.Comments.Common.csproj" />
     <ProjectReference Include="..\App.Comments.Data\App.Comments.Data.csproj" />
+    <ProjectReference Include="..\App.Comments.Services\App.Comments.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Media\FilesForZip\" />
+    <Folder Include="Media\Images\" />
+    <Folder Include="Media\ZipedFile\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 

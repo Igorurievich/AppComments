@@ -7,12 +7,12 @@ using App.Comments.Data;
 using App.Comments.Data.Repositories;
 using App.Comments.Common.Interfaces.Repositories;
 using App.Comments.Common.Interfaces.Services;
-using App.Comments.Common.Services;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Routing;
 using AutoMapper;
 using App.Comments.Web;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using App.Comments.Services;
 
 namespace NewAngularCommentsApplication
 {
@@ -49,6 +49,7 @@ namespace NewAngularCommentsApplication
 
 			services.AddTransient(typeof(ICommentsService), typeof(CommentsService));
 			services.AddTransient(typeof(IAuthenticationService), typeof(AuthenticationService));
+			services.AddTransient(typeof(ITestsService), typeof(TestsService));
 
 			services.AddAuthentication().AddFacebook(facebookOptions =>
 			{
@@ -63,7 +64,6 @@ namespace NewAngularCommentsApplication
 			});
 
 			services.AddSignalR();
-
 			services.AddAutoMapper();
 		}
 

@@ -1,14 +1,19 @@
 ﻿using App.Comments.Common.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+using System;
+using System.Diagnostics;
 
 namespace App.Comments.Data
 {
     public class CommentsContext : DbContext
     {
+		public Action<string> Log { get; set; }
+		public CommentsContext()
+		{
+			Log = log => Trace.Write(log);
+		}
 
-        public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
+		public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
         {
 			
 		}
@@ -26,7 +31,7 @@ namespace App.Comments.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-          
+			optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }
 }
