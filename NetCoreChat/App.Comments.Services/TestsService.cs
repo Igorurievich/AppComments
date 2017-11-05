@@ -33,6 +33,7 @@ namespace App.Comments.Services
 		{
 			var watch = Stopwatch.StartNew();
 			string text = File.ReadAllText(@".\Media\Text.txt");
+			text.LastIndexOf("Lorem");
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
 		}
