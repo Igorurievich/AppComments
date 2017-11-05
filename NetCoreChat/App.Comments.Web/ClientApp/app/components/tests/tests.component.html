@@ -14,7 +14,7 @@
                         (mouseup)="runCountSQLQueriesGeneratingTime()">
                     Start
                 </button></td>
-            <td>john@example.com</td>
+            <td>{{SQLTestTime}}</td>
         </tr>
         <tr>
             <td>Finding string in a text test</td>
@@ -25,10 +25,10 @@
                     Start
                 </button>
             </td>
-            <td>john@example.com</td>
+            <td>{{FindStringInTextTestTime}}</td>
         </tr>
         <tr>
-            <td>Parsing object to JSON test</td>
+            <td>Parsing object to JSON object</td>
             <td>
                 <button type="button"
                         class="btn"
@@ -36,10 +36,10 @@
                     Start
                 </button>
             </td>
-            <td>john@example.com</td>
+            <td>{{ParseJsonObjectTime}}</td>
         </tr>
         <tr>
-            <td>Resize image 1000 times</td>
+            <td>Resize image with 15k resolution</td>
             <td>
                 <button type="button"
                         class="btn"
@@ -47,10 +47,10 @@
                     Start
                 </button>
             </td>
-            <td>john@example.com</td>
+            <td>{{ResizeImageTime}}</td>
         </tr>
         <tr>
-            <td>Archive 1000 files ti zip file</td>
+            <td>Archive 500 files to zip file</td>
             <td>
                 <button type="button"
                         class="btn"
@@ -58,7 +58,7 @@
                     Start
                 </button>
             </td>
-            <td>john@example.com</td>
+            <td>{{ZipFilesTime}}</td>
         </tr>
     </tbody>
 </table> 

@@ -21,7 +21,7 @@ export class TestsComponent implements OnInit {
     SQLTestTime: number;
     FindStringInTextTestTime: number;
     ParseJsonObjectTime: number;
-    ResizeImagesTime: number;
+    ResizeImageTime: number;
     ZipFilesTime: number;
 
     private baseUrl: string;
@@ -31,7 +31,6 @@ export class TestsComponent implements OnInit {
     }
 
     runCountSQLQueriesGeneratingTime() {
-        alert("alert");
         this.httpService.get(this.baseUrl + 'api/tests/CountSQLQueriesGeneratingTime').toPromise().then(res => {
             this.SQLTestTime = +res.text();
         });
@@ -49,7 +48,7 @@ export class TestsComponent implements OnInit {
     }
     runResizeImages() {
         this.httpService.get(this.baseUrl + 'api/tests/ResizeImages').toPromise().then(res => {
-            this.ResizeImagesTime = +res.text();
+            this.ResizeImageTime = +res.text();
         });
     }
     runZipFiles() {

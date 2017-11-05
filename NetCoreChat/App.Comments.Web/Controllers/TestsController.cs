@@ -39,9 +39,7 @@ namespace App.Comments.Web.Controllers
 		[HttpGet]
 		public double ResizeImages()
 		{
-			MemoryStream image = new MemoryStream();
-			uint count = 5;
-			return _testsService.ResizeImages(image, count);
+			return _testsService.ResizeImage();
 		}
 
 		[HttpGet]

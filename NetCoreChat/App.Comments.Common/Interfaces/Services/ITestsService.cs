@@ -8,7 +8,7 @@ namespace App.Comments.Common.Interfaces.Services
 {
     public interface ITestsService
     {
-		double ResizeImages(Stream image, uint count);
+		double ResizeImage();
 		double FindStringInText(string allText, string findingText);
 		double ZipFiles();
 		double ParseJsonObject(object objectForParsing);
