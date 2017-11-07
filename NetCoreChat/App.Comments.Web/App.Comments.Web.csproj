@@ -38,9 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Media\FilesForZip\" />
-    <Folder Include="Media\Images\ResizedImage\" />
-    <Folder Include="Media\ZipedFile\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 

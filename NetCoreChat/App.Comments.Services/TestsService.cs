@@ -59,7 +59,7 @@ namespace App.Comments.Services
 				image.Mutate(x => x
 					 .Resize(image.Width / 2, image.Height / 2)
 					 .Grayscale());
-				image.Save(@".\Media\Images\resizedImage.jpg");
+				image.Save(@".\Media\Images\ResizedImage\resizedImage.jpg");
 			}
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
