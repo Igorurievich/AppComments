@@ -9,14 +9,11 @@ namespace App.Comments.Data.Repositories
 {
     public class CommentRepository : ICommentRepository
     {
-		public Action<string> Log { get; set; }
-
 		private readonly CommentsContext _dbContext;
 
         public CommentRepository(CommentsContext dbContext)
         {
             _dbContext = dbContext;
-			_dbContext.Log = log => System.Diagnostics.Trace.Write(log);
         }
 
         public void AddComment(Comment comment)
@@ -31,14 +28,21 @@ namespace App.Comments.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-        public IEnumerable<Comment> GetAll()
+        public IEnumerable<Comment> GetLast50Comments()
         {
-            return _dbContext.Comments
-            .Include(appUser => appUser.ApplicationUser)
-            .AsEnumerable();
-        }
+			return _dbContext.Comments.OrderByDescending(p => p.Id).Take(50)
+			.Include(appUser => appUser.ApplicationUser)
+			.AsEnumerable();
+		}
 
-        public Comment GetCommentByUserName(string UserName)
+		public IEnumerable<Comment> GetAll()
+		{
+			return _dbContext.Comments
+			.Include(appUser => appUser.ApplicationUser)
+			.AsEnumerable();
+		}
+
+		public Comment GetCommentByUserName(string UserName)
         {
             return _dbContext.Comments.FirstOrDefault(x => x.ApplicationUser.UserName == UserName);
         }
@@ -48,5 +52,10 @@ namespace App.Comments.Data.Repositories
             _dbContext.Comments.Update(comment);
             _dbContext.SaveChanges();
         }
-    }
+
+		public void DeleteAllComments(IEnumerable<Comment> commentsForDelete)
+		{
+			_dbContext.RemoveRange(commentsForDelete);
+		}
+	}
 }

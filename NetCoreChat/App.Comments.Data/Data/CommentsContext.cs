@@ -7,10 +7,8 @@ namespace App.Comments.Data
 {
     public class CommentsContext : DbContext
     {
-		public Action<string> Log { get; set; }
 		public CommentsContext()
 		{
-			Log = log => Trace.Write(log);
 		}
 
 		public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)

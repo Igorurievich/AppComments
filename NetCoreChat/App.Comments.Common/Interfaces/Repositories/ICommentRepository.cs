@@ -10,5 +10,7 @@ namespace App.Comments.Common.Interfaces.Repositories
         void DeleteComment(Comment comment);
         Comment GetCommentByUserName(string UserName);
         IEnumerable<Comment> GetAll();
-    }
+		IEnumerable<Comment> GetLast50Comments();
+		void DeleteAllComments(IEnumerable<Comment> commentsForDelete);
+	}
 }

@@ -12,6 +12,6 @@ namespace App.Comments.Common.Interfaces.Services
 		double FindStringInText(string allText, string findingText);
 		double ZipFiles();
 		double ParseJsonObject(object objectForParsing);
-		double CountSQLQueriesGeneratingTime();
+		(double, double, double) CountSQLQueriesGeneratingTime();
 	}
 }

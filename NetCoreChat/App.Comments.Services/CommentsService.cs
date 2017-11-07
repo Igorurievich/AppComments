@@ -23,7 +23,7 @@ namespace App.Comments.Services
 
 		public IEnumerable<CommentDto> GetAllComments()
         {
-			var comments = _commentRepository.GetAll().ToList();
+			var comments = _commentRepository.GetLast50Comments().ToList();
 			return _mapper.Map<List<Comment>, List<CommentDto>>(comments);
         }
 

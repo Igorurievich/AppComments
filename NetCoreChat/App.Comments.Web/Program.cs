@@ -28,17 +28,26 @@ namespace NewAngularCommentsApplication
 					var logger = services.GetRequiredService<ILogger<Program>>();
 					logger.LogError(ex, "An error occurred while seeding the database.");
 				}
+
 			}
 
 			host.Run();
 		}
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-				.UseKestrel(options =>{
+		public static IWebHost BuildWebHost(string[] args) =>
+			WebHost.CreateDefaultBuilder(args)
+				.UseStartup<Startup>()
+				.UseKestrel(options =>
+				{
 					options.Listen(IPAddress.Loopback, 5000);
 				})
-                .Build();
-    }
+				.ConfigureLogging((hostingContext, logging) =>
+				{
+					logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+					logging.AddConsole();
+					logging.AddDebug();
+				})
+				.Build();
+
+	}
 }

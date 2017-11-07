@@ -9,24 +9,51 @@ using App.Comments.Common.Helpers;
 using System.IO.Compression;
 using SixLabors.ImageSharp;
 using Newtonsoft.Json;
+using App.Comments.Data;
+using App.Comments.Common.Entities;
 
 namespace App.Comments.Services
 {
 	public class TestsService : ITestsService
 	{
 		private readonly ICommentRepository _commentRepository;
-		public TestsService(ICommentRepository commentRepository)
+		private readonly CommentsContext _commentsContext;
+
+		public TestsService(ICommentRepository commentRepository, CommentsContext commentsContext)
 		{
+			_commentsContext = commentsContext;
 			_commentRepository = commentRepository;
 		}
-		public double CountSQLQueriesGeneratingTime()
+
+		public (double, double, double) CountSQLQueriesGeneratingTime()
 		{
-			var watch = Stopwatch.StartNew();
+			var userId = _commentsContext.Users.FirstOrDefault(x => x.Id > 0);
 
-			_commentRepository.GetAll().AsQueryable();
+			var insertTime = Stopwatch.StartNew();
+			for (int i = 0; i < 10; i++)
+			{
+				_commentRepository.AddComment(new Comment()
+				{
+					ApplicationUser = userId,
+					CommentText = i.ToString(),
+					PostTime = DateTime.Now,
+					Title = i.ToString()
+				});
+			}
+			insertTime.Stop();
 
-			watch.Stop();
-			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
+			var selectTime = Stopwatch.StartNew();
+			var comments = _commentRepository.GetAll();
+			selectTime.Stop();
+
+			var deleteTime = Stopwatch.StartNew();
+			_commentRepository.DeleteAllComments(comments);
+			deleteTime.Stop();
+
+
+			return (TimeSpan.FromMilliseconds(insertTime.ElapsedMilliseconds).TotalSeconds,
+					TimeSpan.FromMilliseconds(selectTime.ElapsedMilliseconds).TotalSeconds,
+					TimeSpan.FromMilliseconds(deleteTime.ElapsedMilliseconds).TotalSeconds);
 		}
 
 		public double FindStringInText(string allText, string findingText)
@@ -40,13 +67,20 @@ namespace App.Comments.Services
 
 		public double ParseJsonObject(object objectForParsing)
 		{
-			List<string> files = new List<string>();
-			for (int i = 0; i < 500; i++)
+			List<Comment> comments = new List<Comment>();
+			for (int i = 0; i < 500000; i++)
 			{
-				files.Add(i.ToString());
+				comments.Add(new Comment()
+				{
+					CommentText = i.ToString(),
+					Id = i,
+					PostTime = DateTime.Now,
+					Title = i + i.ToString()
+				}
+				);
 			}
 			var watch = Stopwatch.StartNew();
-			JsonConvert.SerializeObject(files);
+			JsonConvert.SerializeObject(comments);
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
 		}

@@ -16,9 +16,15 @@ namespace App.Comments.Web.Controllers
 		}
 
 		[HttpGet]
-		public double CountSQLQueriesGeneratingTime()
+		public IEnumerable<double> CountSQLQueriesGeneratingTime()
 		{
-			return _testsService.CountSQLQueriesGeneratingTime();
+			var result = _testsService.CountSQLQueriesGeneratingTime();
+			return new List<double>()
+			{
+				result.Item1,
+				result.Item2,
+				result.Item3
+			};
 		}
 
 		[HttpGet]
