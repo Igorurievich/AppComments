@@ -36,7 +36,6 @@ export class TestsComponent implements OnInit {
     runCountSQLQueriesGeneratingTime() {
         this.httpService.get(this.baseUrl + 'api/tests/CountSQLQueriesGeneratingTime').toPromise().then(res => {
             const result = res.json();
-            alert(result[0]);
             this.InsertTime = result[0];
             this.SelectTime = result[1];
             this.DeleteTime = result[2];

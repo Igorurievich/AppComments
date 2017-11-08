@@ -30,7 +30,7 @@ namespace App.Comments.Services
 			var userId = _commentsContext.Users.FirstOrDefault(x => x.Id > 0);
 
 			var insertTime = Stopwatch.StartNew();
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 500; i++)
 			{
 				_commentRepository.AddComment(new Comment()
 				{
