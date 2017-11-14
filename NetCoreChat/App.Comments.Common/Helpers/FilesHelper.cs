@@ -3,18 +3,21 @@ using System.IO;
 
 namespace App.Comments.Common.Helpers
 {
-    public static class FilesHelper
-    {
-		public static void CreateRandomFiles()
+	public static class FilesHelper
+	{
+		public static void CreateRandomFiles(bool isLinux)
 		{
-			if (Directory.GetFiles(@".\Media\FilesForZip\").Length == 0)
+			string path = isLinux ? "Media/FilesForZip/" : ".\\Media\\FilesForZip\\";
+			string filePath = isLinux ? "Media/FilesForZip/file" : ".\\Media\\FilesForZip\\file";
+
+			if (Directory.GetFiles(path).Length == 0)
 			{
 				for (int i = 0; i < 500; i++)
 				{
 					Random random = new Random();
 					long randomNumber = random.Next(0, 1000);
 
-					FileInfo fi = new FileInfo(@".\Media\FilesForZip\file" + i);
+					FileInfo fi = new FileInfo(filePath + i);
 					if (!fi.Exists)
 					{
 						using (FileStream fs = fi.Create())
@@ -26,9 +29,10 @@ namespace App.Comments.Common.Helpers
 			}
 		}
 
-		public static void CleanResultDirectory()
+		public static void CleanResultDirectory(bool isLinux)
 		{
-			DirectoryInfo di = new DirectoryInfo(@".\Media\ZipedFile\");
+			string path = isLinux ? "Media/ZipedFile/" : ".\\Media\\ZipedFile\\";
+			DirectoryInfo di = new DirectoryInfo(path);
 
 			foreach (FileInfo file in di.GetFiles())
 			{

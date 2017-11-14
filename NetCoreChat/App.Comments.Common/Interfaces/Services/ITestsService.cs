@@ -11,7 +11,7 @@ namespace App.Comments.Common.Interfaces.Services
 		double ResizeImage();
 		double FindStringInText(string allText, string findingText);
 		double ZipFiles();
-		double ParseJsonObject(object objectForParsing);
-		(double, double, double) CountSQLQueriesGeneratingTime();
+		double ParseJsonObject();
+		(double, double, double) CountSQLQueriesTime();
 	}
 }

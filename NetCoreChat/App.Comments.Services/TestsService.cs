@@ -11,6 +11,7 @@ using SixLabors.ImageSharp;
 using Newtonsoft.Json;
 using App.Comments.Data;
 using App.Comments.Common.Entities;
+using System.Runtime.InteropServices;
 
 namespace App.Comments.Services
 {
@@ -19,13 +20,17 @@ namespace App.Comments.Services
 		private readonly ICommentRepository _commentRepository;
 		private readonly CommentsContext _commentsContext;
 
+		bool isLinux = false;
+
 		public TestsService(ICommentRepository commentRepository, CommentsContext commentsContext)
 		{
 			_commentsContext = commentsContext;
 			_commentRepository = commentRepository;
+
+			isLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 		}
 
-		public (double, double, double) CountSQLQueriesGeneratingTime()
+		public (double, double, double) CountSQLQueriesTime()
 		{
 			var userId = _commentsContext.Users.FirstOrDefault(x => x.Id > 0);
 
@@ -58,14 +63,16 @@ namespace App.Comments.Services
 
 		public double FindStringInText(string allText, string findingText)
 		{
+			string path;
+			path = isLinux ? "Media/Text.txt" : ".\\Media\\Text.txt";
 			var watch = Stopwatch.StartNew();
-			string text = File.ReadAllText(@".\Media\Text.txt");
+			string text = File.ReadAllText(path);
 			text.LastIndexOf("Lorem");
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
 		}
 
-		public double ParseJsonObject(object objectForParsing)
+		public double ParseJsonObject()
 		{
 			List<Comment> comments = new List<Comment>();
 			for (int i = 0; i < 500000; i++)
@@ -87,13 +94,17 @@ namespace App.Comments.Services
 
 		public double ResizeImage()
 		{
+			string pathToImage;
+			string pathToSavedImage;
+			pathToImage = isLinux ? "Media/Images/earth.jpg" : ".\\Media\\Images\\earth.jpg";
+			pathToSavedImage = isLinux ? "Media/Images/ResizedImage/resizedImage.jpg" : ".\\Media\\Images\\ResizedImage\\resizedImage.jpg";
 			var watch = Stopwatch.StartNew();
-			using (Image<Rgba32> image = Image.Load(@".\Media\Images\earth.jpg"))
+			using (Image<Rgba32> image = Image.Load(pathToImage))
 			{
 				image.Mutate(x => x
 					 .Resize(image.Width / 2, image.Height / 2)
 					 .Grayscale());
-				image.Save(@".\Media\Images\ResizedImage\resizedImage.jpg");
+				image.Save(pathToSavedImage);
 			}
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
@@ -101,11 +112,17 @@ namespace App.Comments.Services
 
 		public double ZipFiles()
 		{
-			FilesHelper.CreateRandomFiles();
-			FilesHelper.CleanResultDirectory();
+			string pathFilesForZip;
+			string pathToResultZip;
+
+			pathFilesForZip = isLinux ? "Media/FilesForZip" : ".\\Media\\FilesForZip";
+			pathToResultZip = isLinux ? "Media/ZipedFile/result.zip" : ".\\Media\\ZipedFile\\result.zip";
+
+			FilesHelper.CreateRandomFiles(isLinux);
+			FilesHelper.CleanResultDirectory(isLinux);
 
 			var watch = Stopwatch.StartNew();
-			ZipFile.CreateFromDirectory(@".\Media\FilesForZip", @".\Media\ZipedFile\result.zip");
+			ZipFile.CreateFromDirectory(pathFilesForZip, pathToResultZip);
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
 		}

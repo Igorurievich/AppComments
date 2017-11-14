@@ -18,7 +18,7 @@ namespace App.Comments.Web.Controllers
 		[HttpGet]
 		public IEnumerable<double> CountSQLQueriesGeneratingTime()
 		{
-			var result = _testsService.CountSQLQueriesGeneratingTime();
+			var result = _testsService.CountSQLQueriesTime();
 			return new List<double>()
 			{
 				result.Item1,
@@ -38,8 +38,7 @@ namespace App.Comments.Web.Controllers
 		[HttpGet]
 		public double ParseJsonObject()
 		{
-			string testString = "test string";
-			return _testsService.ParseJsonObject(testString);
+			return _testsService.ParseJsonObject();
 		}
 
 		[HttpGet]

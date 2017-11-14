@@ -40,14 +40,7 @@ namespace NewAngularCommentsApplication
 				.UseKestrel(options =>
 				{
 					options.Listen(IPAddress.Loopback, 5000);
-				})
-				.ConfigureLogging((hostingContext, logging) =>
-				{
-					logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-					logging.AddConsole();
-					logging.AddDebug();
-				})
-				.Build();
+				}).Build();
 
 	}
 }
