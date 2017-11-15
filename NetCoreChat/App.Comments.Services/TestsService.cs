@@ -101,7 +101,7 @@ namespace App.Comments.Services
 			var watch = Stopwatch.StartNew();
 			using (Image<Rgba32> image = Image.Load(pathToImage))
 			{
-				image.Mutate(x => x.GaussianBlur(10));
+				image.Mutate(x => x.GaussianBlur(20));
 				image.Save(pathToSavedImage);
 			}
 			watch.Stop();
