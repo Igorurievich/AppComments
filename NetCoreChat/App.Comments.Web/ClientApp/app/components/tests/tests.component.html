@@ -39,15 +39,26 @@
             <td>{{ParseJsonObjectTime}}</td>
         </tr>
         <tr>
-            <td>Apply Gaus filter with 15k resolution</td>
+            <td>Gaus tests</td>
             <td>
                 <button type="button"
                         class="btn"
-                        (mouseup)="runApplyGausFilter()">
+                        (mouseup)="runGausesTests()">
                     Start
                 </button>
             </td>
-            <td>{{ResizeImageTime}}</td>
+            <td>Big image:{{BigSizeGausTime}}<br> Little image:{{LittleSizeGausTime}}</td>
+        </tr>
+        <tr>
+            <td>Resize images test</td>
+            <td>
+                <button type="button"
+                        class="btn"
+                        (mouseup)="runResizesTests()">
+                    Start
+                </button>
+            </td>
+            <td>Big image:{{BigSizeImageResizeTime}}<br> Little image:{{LittleSizeImageResizeTime}}</td>
         </tr>
         <tr>
             <td>Archive 500 files to zip file</td>

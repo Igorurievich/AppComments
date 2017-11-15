@@ -27,6 +27,12 @@ export class TestsComponent implements OnInit {
     SelectTime: number;
     DeleteTime: number;
 
+    BigSizeGausTime: number;
+    LittleSizeGausTime: number;
+
+    BigSizeImageResizeTime: number;
+    LittleSizeImageResizeTime: number;
+
     private baseUrl: string;
 
     ngOnInit(): void {
@@ -52,14 +58,23 @@ export class TestsComponent implements OnInit {
             this.ParseJsonObjectTime = +res.text();
         });
     }
-    runApplyGausFilter() {
-        this.httpService.get(this.baseUrl + 'api/tests/ApplyGausFilter').toPromise().then(res => {
-            this.ResizeImageTime = +res.text();
+    runResizesTests() {
+        this.httpService.get(this.baseUrl + 'api/tests/ResizeImagesTests').toPromise().then(res => {
+            const result = res.json();
+            this.BigSizeImageResizeTime = result[0];
+            this.LittleSizeImageResizeTime = result[1];
         });
     }
     runZipFiles() {
         this.httpService.get(this.baseUrl + 'api/tests/ZipFiles').toPromise().then(res => {
             this.ZipFilesTime = +res.text();
+        });
+    }
+    runGausesTests() {
+        this.httpService.get(this.baseUrl + 'api/tests/RunGausTests').toPromise().then(res => {
+            const result = res.json();
+            this.BigSizeGausTime = result[0];
+            this.LittleSizeGausTime = result[1];
         });
     }
 }

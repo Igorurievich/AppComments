@@ -2,10 +2,11 @@
 {
     public interface ITestsService
     {
-		double ApplyGausBlur();
-		double FindStringInText(string allText, string findingText);
+		(double, double) ApplyGausBlur();
+		double FindStringInText();
 		double ZipFiles();
 		double ParseJsonObject();
 		(double, double, double) CountSQLQueriesTime();
+		(double, double) ResizeImagesTests();
 	}
 }

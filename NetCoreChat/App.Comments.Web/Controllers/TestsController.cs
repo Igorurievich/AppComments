@@ -30,9 +30,7 @@ namespace App.Comments.Web.Controllers
 		[HttpGet]
 		public double FindStringInText()
 		{
-			string text = "";
-			string findedText = "";
-			return _testsService.FindStringInText(text, findedText);
+			return _testsService.FindStringInText();
 		}
 
 		[HttpGet]
@@ -42,9 +40,25 @@ namespace App.Comments.Web.Controllers
 		}
 
 		[HttpGet]
-		public double ApplyGausFilter()
+		public IEnumerable<double> ResizeImagesTests()
 		{
-			return _testsService.ApplyGausBlur();
+			var result = _testsService.ResizeImagesTests();
+			return new List<double>()
+			{
+				result.Item1,
+				result.Item2
+			};
+		}
+
+		[HttpGet]
+		public IEnumerable<double> RunGausTests()
+		{
+			var result = _testsService.ApplyGausBlur();
+			return new List<double>()
+			{
+				result.Item1,
+				result.Item2
+			};
 		}
 
 		[HttpGet]

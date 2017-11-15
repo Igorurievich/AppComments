@@ -61,7 +61,7 @@ namespace App.Comments.Services
 					TimeSpan.FromMilliseconds(deleteTime.ElapsedMilliseconds).TotalSeconds);
 		}
 
-		public double FindStringInText(string allText, string findingText)
+		public double FindStringInText()
 		{
 			string path;
 			path = isLinux ? "Media/Text.txt" : ".\\Media\\Text.txt";
@@ -92,20 +92,35 @@ namespace App.Comments.Services
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
 		}
 
-		public double ApplyGausBlur()
+		public (double, double) ApplyGausBlur()
 		{
-			string pathToImage;
-			string pathToSavedImage;
-			pathToImage = isLinux ? "Media/Images/earth.jpg" : ".\\Media\\Images\\earth.jpg";
-			pathToSavedImage = isLinux ? "Media/Images/FilteredImage/filteredImage.jpg" : ".\\Media\\Images\\FilteredImage\\filteredImage.jpg";
-			var watch = Stopwatch.StartNew();
-			using (Image<Rgba32> image = Image.Load(pathToImage))
+			string pathToBigImage;
+			string pathToBigSavedImage;
+			pathToBigImage = isLinux ? "Media/Images/earth.jpg" : ".\\Media\\Images\\earth.jpg";
+			pathToBigSavedImage = isLinux ? "Media/Images/FilteredImage/filteredEarth.jpg" : ".\\Media\\Images\\FilteredImage\\filteredEarth.jpg";
+
+			string pathToLittleImage;
+			string pathToLittleSavedImage;
+			pathToLittleImage = isLinux ? "Media/Images/california.jpg" : ".\\Media\\Images\\california.jpg";
+			pathToLittleSavedImage = isLinux ? "Media/Images/FilteredImage/filteredCalifornnia.jpg" : ".\\Media\\Images\\FilteredImage\\filteredCalifornnia.jpg";
+
+			var bigImageTime = Stopwatch.StartNew();
+			using (Image<Rgba32> image = Image.Load(pathToBigImage))
 			{
-				image.Mutate(x => x.GaussianBlur(20));
-				image.Save(pathToSavedImage);
+				image.Mutate(x => x.GaussianBlur(10));
+				image.Save(pathToBigSavedImage);
 			}
-			watch.Stop();
-			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
+			bigImageTime.Stop();
+
+			var littleImageTime = Stopwatch.StartNew();
+			using (Image<Rgba32> littleimage = Image.Load(pathToLittleImage))
+			{
+				littleimage.Mutate(x => x.GaussianBlur(10));
+				littleimage.Save(pathToLittleSavedImage);
+			}
+			littleImageTime.Stop();
+			return (TimeSpan.FromMilliseconds(bigImageTime.ElapsedMilliseconds).TotalSeconds,
+				   TimeSpan.FromMilliseconds(littleImageTime.ElapsedMilliseconds).TotalSeconds);
 		}
 
 		public double ZipFiles()
@@ -123,6 +138,37 @@ namespace App.Comments.Services
 			ZipFile.CreateFromDirectory(pathFilesForZip, pathToResultZip);
 			watch.Stop();
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
+		}
+
+		public (double, double) ResizeImagesTests()
+		{
+			string pathToBigImage;
+			string pathToBigSavedImage;
+			pathToBigImage = isLinux ? "Media/Images/earth.jpg" : ".\\Media\\Images\\earth.jpg";
+			pathToBigSavedImage = isLinux ? "Media/Images/ResizedImages/filteredEarth.jpg" : ".\\Media\\Images\\ResizedImages\\filteredEarth.jpg";
+
+			string pathToLittleImage;
+			string pathToLittleSavedImage;
+			pathToLittleImage = isLinux ? "Media/Images/california.jpg" : ".\\Media\\Images\\california.jpg";
+			pathToLittleSavedImage = isLinux ? "Media/Images/ResizedImages/filteredCalifornnia.jpg" : ".\\Media\\Images\\ResizedImages\\filteredCalifornnia.jpg";
+
+			var bigImageTime = Stopwatch.StartNew();
+			using (Image<Rgba32> image = Image.Load(pathToBigImage))
+			{
+				image.Mutate(x => x.Resize(image.Width / 2, image.Height / 2));
+				image.Save(pathToBigSavedImage);
+			}
+			bigImageTime.Stop();
+
+			var littleImageTime = Stopwatch.StartNew();
+			using (Image<Rgba32> littleimage = Image.Load(pathToLittleImage))
+			{
+				littleimage.Mutate(x => x.Resize(littleimage.Width / 2, littleimage.Height / 2));
+				littleimage.Save(pathToLittleSavedImage);
+			}
+			littleImageTime.Stop();
+			return (TimeSpan.FromMilliseconds(bigImageTime.ElapsedMilliseconds).TotalSeconds,
+				   TimeSpan.FromMilliseconds(littleImageTime.ElapsedMilliseconds).TotalSeconds);
 		}
 	}
 }

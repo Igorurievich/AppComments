@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Media\Images\ResizedImages\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
