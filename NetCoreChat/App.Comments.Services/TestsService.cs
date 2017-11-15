@@ -92,18 +92,16 @@ namespace App.Comments.Services
 			return TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
 		}
 
-		public double ResizeImage()
+		public double ApplyGausBlur()
 		{
 			string pathToImage;
 			string pathToSavedImage;
 			pathToImage = isLinux ? "Media/Images/earth.jpg" : ".\\Media\\Images\\earth.jpg";
-			pathToSavedImage = isLinux ? "Media/Images/ResizedImage/resizedImage.jpg" : ".\\Media\\Images\\ResizedImage\\resizedImage.jpg";
+			pathToSavedImage = isLinux ? "Media/Images/FilteredImage/filteredImage.jpg" : ".\\Media\\Images\\FilteredImage\\filteredImage.jpg";
 			var watch = Stopwatch.StartNew();
 			using (Image<Rgba32> image = Image.Load(pathToImage))
 			{
-				image.Mutate(x => x
-					 .Resize(image.Width / 2, image.Height / 2)
-					 .Grayscale());
+				image.Mutate(x => x.GaussianBlur(10));
 				image.Save(pathToSavedImage);
 			}
 			watch.Stop();

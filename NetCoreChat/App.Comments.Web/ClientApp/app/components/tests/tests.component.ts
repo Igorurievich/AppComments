@@ -52,8 +52,8 @@ export class TestsComponent implements OnInit {
             this.ParseJsonObjectTime = +res.text();
         });
     }
-    runResizeImages() {
-        this.httpService.get(this.baseUrl + 'api/tests/ResizeImages').toPromise().then(res => {
+    runApplyGausFilter() {
+        this.httpService.get(this.baseUrl + 'api/tests/ApplyGausFilter').toPromise().then(res => {
             this.ResizeImageTime = +res.text();
         });
     }

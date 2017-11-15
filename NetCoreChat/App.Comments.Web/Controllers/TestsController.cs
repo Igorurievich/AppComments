@@ -42,9 +42,9 @@ namespace App.Comments.Web.Controllers
 		}
 
 		[HttpGet]
-		public double ResizeImages()
+		public double ApplyGausFilter()
 		{
-			return _testsService.ResizeImage();
+			return _testsService.ApplyGausBlur();
 		}
 
 		[HttpGet]
