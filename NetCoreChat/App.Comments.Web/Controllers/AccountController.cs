@@ -44,7 +44,7 @@ namespace NetCoreChat.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		public string LogInUser(string username, string password)
+		public ActionResult LogInUser(string username, string password)
 		{
 			string jwt = String.Empty;
 			if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -54,9 +54,13 @@ namespace NetCoreChat.Controllers
 			var user = _authenticationService.LogIn(username, password);
 			if (user != null)
 			{
-				return GenerateJWTBasedOnUser(user);
+				return StatusCode(200, GenerateJWTBasedOnUser(user));
 			}
-			return string.Empty;
+			else if (user == null)
+			{
+				return StatusCode(400, ResponseMessagesHelper.LogInPassword);
+			}
+			return StatusCode(400, ResponseMessagesHelper.LogInPassword);
 		}
 
 		[HttpPost]

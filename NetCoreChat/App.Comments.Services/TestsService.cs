@@ -32,27 +32,33 @@ namespace App.Comments.Services
 
 		public (double, double, double) CountSQLQueriesTime()
 		{
+			_commentRepository.DeleteAllComments();
 			var userId = _commentsContext.Users.FirstOrDefault(x => x.Id > 0);
-
 			var insertTime = Stopwatch.StartNew();
-			for (int i = 0; i < 500; i++)
+
+			Comment comment = null;
+			List<Comment> comments = new List<Comment>();
+			for (int i = 0; i < 10000; i++)
 			{
-				_commentRepository.AddComment(new Comment()
+				comment = new Comment()
 				{
 					ApplicationUser = userId,
-					CommentText = i.ToString(),
+					CommentText = $"This is test comment with number {i}",
 					PostTime = DateTime.Now,
-					Title = i.ToString()
-				});
+					Title = $"This is test Title with number {i}",
+				};
+				comments.Add(comment);
+				comment = null;
 			}
+			_commentRepository.AddComments(comments);
 			insertTime.Stop();
 
 			var selectTime = Stopwatch.StartNew();
-			var comments = _commentRepository.GetAll();
+			var selectedComments = _commentRepository.GetAll();
 			selectTime.Stop();
 
 			var deleteTime = Stopwatch.StartNew();
-			_commentRepository.DeleteAllComments(comments);
+			_commentRepository.DeleteComments(comments);
 			deleteTime.Stop();
 
 

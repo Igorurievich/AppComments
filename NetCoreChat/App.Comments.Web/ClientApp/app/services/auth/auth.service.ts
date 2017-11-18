@@ -117,39 +117,27 @@ export class AuthenticationService {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('username', username);
         urlSearchParams.append('password', password);
-        console.log(this.baseUrl);
         return this.httpService.get(this.baseUrl + 'api/account/LogInUser', { search: urlSearchParams }).toPromise().then(res => {
-            if (res.text().length > 0) {
+            if (res.ok) {
+                
                 this.putTokenToLocalStorage(res.text(), username);
-                return res;
-            } else {
-                return '';
             }
-        });
+        }).catch(err => { alert(err.text("iso-8859")); });
     }
 
     private putTokenToLocalStorage(token: string, username: string) {
         if (token) {
-            // set token property
             this.token = token;
-            // store username and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-            //this.getLoggedInName.emit(username);
-            //this.getLoggedInStatus.emit(true);
-
             this.changeStatusName(username);
             this.changeStatus(true);
-
-
             this.router.navigate(['comments']);
         }
     }
 
     logout() {
-        // clear token remove user from local storage to log user out
         this.token = "";
         localStorage.removeItem('currentUser');
-        //this.getLoggedInStatus.emit(false);
         this.changeStatus(false);
         this.router.navigate(['login']);
     }

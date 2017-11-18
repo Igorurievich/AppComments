@@ -22,13 +22,19 @@ namespace App.Comments.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void DeleteComment(Comment comment)
+		public void AddComments(IEnumerable<Comment> comments)
+		{
+			_dbContext.Comments.AddRange(comments);
+			_dbContext.SaveChanges();
+		}
+
+		public void DeleteComment(Comment comment)
         {
             _dbContext.Comments.Remove(comment);
             _dbContext.SaveChanges();
         }
 
-        public IEnumerable<Comment> GetLast50Comments()
+		public IEnumerable<Comment> GetLast50Comments()
         {
 			return _dbContext.Comments.OrderByDescending(p => p.Id).Take(50)
 			.Include(appUser => appUser.ApplicationUser)
@@ -53,9 +59,16 @@ namespace App.Comments.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-		public void DeleteAllComments(IEnumerable<Comment> commentsForDelete)
+		public void DeleteComments(IEnumerable<Comment> commentsForDelete)
 		{
 			_dbContext.RemoveRange(commentsForDelete);
+			_dbContext.SaveChanges();
+		}
+
+		public void DeleteAllComments()
+		{
+			_dbContext.Comments.RemoveRange(_dbContext.Comments);
+			_dbContext.SaveChanges();
 		}
 	}
 }

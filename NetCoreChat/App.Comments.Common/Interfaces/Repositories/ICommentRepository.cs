@@ -6,11 +6,13 @@ namespace App.Comments.Common.Interfaces.Repositories
     public interface ICommentRepository
     {
         void AddComment(Comment comment);
-        void UpdateComment(Comment comment);
+		void AddComments(IEnumerable<Comment> comments);
+		void UpdateComment(Comment comment);
         void DeleteComment(Comment comment);
         Comment GetCommentByUserName(string UserName);
         IEnumerable<Comment> GetAll();
 		IEnumerable<Comment> GetLast50Comments();
-		void DeleteAllComments(IEnumerable<Comment> commentsForDelete);
+		void DeleteComments(IEnumerable<Comment> commentForDelete);
+		void DeleteAllComments();
 	}
 }

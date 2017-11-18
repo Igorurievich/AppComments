@@ -5,7 +5,7 @@
 		private const string logInError = "Something wrong";
 		public static string LogInError => logInError.ToJSON();
 
-		private const string logInPassword = "Password incorrect";
+		private const string logInPassword = "Login or password incorrect";
 		public static string LogInPassword => logInPassword.ToJSON();
 
 		private const string signUpUserExist = "The user with current user name already exist";

@@ -42,9 +42,9 @@ export class TestsComponent implements OnInit {
     runCountSQLQueriesGeneratingTime() {
         this.httpService.get(this.baseUrl + 'api/tests/CountSQLQueriesGeneratingTime').toPromise().then(res => {
             const result = res.json();
-            this.InsertTime = result[0];
-            this.SelectTime = result[1];
-            this.DeleteTime = result[2];
+            this.InsertTime = result.Item1;
+            this.SelectTime = result.Item2;
+            this.DeleteTime = result.Item3;
         });
     }
 
@@ -61,8 +61,8 @@ export class TestsComponent implements OnInit {
     runResizesTests() {
         this.httpService.get(this.baseUrl + 'api/tests/ResizeImagesTests').toPromise().then(res => {
             const result = res.json();
-            this.BigSizeImageResizeTime = result[0];
-            this.LittleSizeImageResizeTime = result[1];
+            this.BigSizeImageResizeTime = result.Item1;
+            this.LittleSizeImageResizeTime = result.Item2;
         });
     }
     runZipFiles() {
@@ -73,8 +73,8 @@ export class TestsComponent implements OnInit {
     runGausesTests() {
         this.httpService.get(this.baseUrl + 'api/tests/RunGausTests').toPromise().then(res => {
             const result = res.json();
-            this.BigSizeGausTime = result[0];
-            this.LittleSizeGausTime = result[1];
+            this.BigSizeGausTime = result.Item1;
+            this.LittleSizeGausTime = result.Item2;
         });
     }
 }

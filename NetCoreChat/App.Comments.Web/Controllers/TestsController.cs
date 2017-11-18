@@ -1,8 +1,7 @@
 ﻿using App.Comments.Common.Interfaces.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.IO;
 
 namespace App.Comments.Web.Controllers
 {
@@ -16,15 +15,9 @@ namespace App.Comments.Web.Controllers
 		}
 
 		[HttpGet]
-		public IEnumerable<double> CountSQLQueriesGeneratingTime()
+		public string CountSQLQueriesGeneratingTime()
 		{
-			var result = _testsService.CountSQLQueriesTime();
-			return new List<double>()
-			{
-				result.Item1,
-				result.Item2,
-				result.Item3
-			};
+			return JsonConvert.SerializeObject(_testsService.CountSQLQueriesTime());
 		}
 
 		[HttpGet]
@@ -40,25 +33,15 @@ namespace App.Comments.Web.Controllers
 		}
 
 		[HttpGet]
-		public IEnumerable<double> ResizeImagesTests()
+		public string ResizeImagesTests()
 		{
-			var result = _testsService.ResizeImagesTests();
-			return new List<double>()
-			{
-				result.Item1,
-				result.Item2
-			};
+			return JsonConvert.SerializeObject(_testsService.ResizeImagesTests());
 		}
 
 		[HttpGet]
-		public IEnumerable<double> RunGausTests()
+		public string RunGausTests()
 		{
-			var result = _testsService.ApplyGausBlur();
-			return new List<double>()
-			{
-				result.Item1,
-				result.Item2
-			};
+			return JsonConvert.SerializeObject(_testsService.ApplyGausBlur());
 		}
 
 		[HttpGet]
