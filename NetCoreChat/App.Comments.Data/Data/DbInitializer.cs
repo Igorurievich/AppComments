@@ -1,4 +1,5 @@
 ﻿using App.Comments.Common.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,10 +24,21 @@ namespace App.Comments.Data.Data
 
 			context.Users.Add(user);
 			user.Comments = new List<Comment>();
-
+			Random random = new Random();
+			
 			for (int i = 0; i < 50; i++)
 			{
-				user.Comments.Add(new Comment { Title = "Hello World " + i + " title", CommentText = "Hello World " + i + " description", ApplicationUser = user });
+				user.Comments.Add(new Comment {
+					Title = "Hello World " + i + " title",
+					CommentText = "Hello World " + i + " description",
+					ApplicationUser = user,
+					CommentData = new CommentData()
+					{
+						Likes = random.Next(0, 50),
+						Dislikes = random.Next(0, 50),
+						CommentDescription = $"Random comment description"
+					}
+				});
 			}
 
             foreach (var comment in user.Comments)

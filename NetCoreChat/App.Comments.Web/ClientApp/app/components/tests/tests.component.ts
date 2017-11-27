@@ -23,9 +23,7 @@ export class TestsComponent implements OnInit {
     ResizeImageTime: number;
     ZipFilesTime: number;
 
-    InsertTime: number;
-    SelectTime: number;
-    DeleteTime: number;
+    Time: number;
 
     BigSizeGausTime: number;
     LittleSizeGausTime: number;
@@ -41,10 +39,7 @@ export class TestsComponent implements OnInit {
 
     runCountSQLQueriesGeneratingTime() {
         this.httpService.get(this.baseUrl + 'api/tests/CountSQLQueriesGeneratingTime').toPromise().then(res => {
-            const result = res.json();
-            this.InsertTime = result.Item1;
-            this.SelectTime = result.Item2;
-            this.DeleteTime = result.Item3;
+            this.Time = +res.text();
         });
     }
 

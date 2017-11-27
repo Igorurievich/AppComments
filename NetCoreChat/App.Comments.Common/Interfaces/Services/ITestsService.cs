@@ -6,7 +6,7 @@
 		double FindStringInText();
 		double ZipFiles();
 		double ParseJsonObject();
-		(double, double, double) CountSQLQueriesTime();
+		double CountSQLQueriesTime();
 		(double, double) ResizeImagesTests();
 	}
 }

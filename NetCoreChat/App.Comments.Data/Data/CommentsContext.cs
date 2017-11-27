@@ -1,7 +1,5 @@
 ﻿using App.Comments.Common.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Diagnostics;
 
 namespace App.Comments.Data
 {
@@ -18,14 +16,16 @@ namespace App.Comments.Data
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+		public DbSet<CommentData> CommentsData { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
 			modelBuilder.Entity<Comment>().ToTable("Comment");
-        }
+			modelBuilder.Entity<CommentData>().ToTable("CommentData");
+		}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

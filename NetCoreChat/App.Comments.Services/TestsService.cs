@@ -27,44 +27,56 @@ namespace App.Comments.Services
 			_commentsContext = commentsContext;
 			_commentRepository = commentRepository;
 
-			isLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+			isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 		}
 
-		public (double, double, double) CountSQLQueriesTime()
+		public double CountSQLQueriesTime()
 		{
 			_commentRepository.DeleteAllComments();
-			var userId = _commentsContext.Users.FirstOrDefault(x => x.Id > 0);
-			var insertTime = Stopwatch.StartNew();
+			var userId = _commentsContext.Users.FirstOrDefault(x => x.UserId > 0);
+			
+			Random random = new Random();
 
-			Comment comment = null;
-			List<Comment> comments = new List<Comment>();
-			for (int i = 0; i < 10000; i++)
+			Stopwatch insertTime = null;
+			Stopwatch selectTime = null;
+			Stopwatch updateTime = null;
+			Stopwatch deleteTime = null;
+
+			Stopwatch time = Stopwatch.StartNew();
+			for (int i = 0; i < 1000; i++)
 			{
-				comment = new Comment()
+				//insertTime = Stopwatch.StartNew();
+				Comment comment = new Comment()
 				{
 					ApplicationUser = userId,
 					CommentText = $"This is test comment with number {i}",
 					PostTime = DateTime.Now,
 					Title = $"This is test Title with number {i}",
+					CommentData = new CommentData()
+					{
+						CommentDescription = $"Simple comment description data {i}",
+						Dislikes = random.Next(0, 50),
+						Likes = random.Next(0, 50)
+					}
 				};
-				comments.Add(comment);
-				comment = null;
+				_commentRepository.AddComment(comment);
+				//insertTime.Stop();
+
+				//selectTime = Stopwatch.StartNew();
+				var selectedComments = _commentRepository.GetAll();
+				//selectTime.Stop();
+
+				//updateTime = Stopwatch.StartNew();
+				comment.Title = $"Changed comment title with number {i}";
+				comment.CommentText = $"Changed comment text with number {i}";
+				_commentRepository.UpdateComment(comment);
+				//updateTime.Stop();
+
+				//deleteTime = Stopwatch.StartNew();
+				_commentRepository.DeleteComment(comment);
+				//deleteTime.Stop();
 			}
-			_commentRepository.AddComments(comments);
-			insertTime.Stop();
-
-			var selectTime = Stopwatch.StartNew();
-			var selectedComments = _commentRepository.GetAll();
-			selectTime.Stop();
-
-			var deleteTime = Stopwatch.StartNew();
-			_commentRepository.DeleteComments(comments);
-			deleteTime.Stop();
-
-
-			return (TimeSpan.FromMilliseconds(insertTime.ElapsedMilliseconds).TotalSeconds,
-					TimeSpan.FromMilliseconds(selectTime.ElapsedMilliseconds).TotalSeconds,
-					TimeSpan.FromMilliseconds(deleteTime.ElapsedMilliseconds).TotalSeconds);
+			return TimeSpan.FromMilliseconds(time.ElapsedMilliseconds).TotalSeconds;
 		}
 
 		public double FindStringInText()
@@ -86,7 +98,7 @@ namespace App.Comments.Services
 				comments.Add(new Comment()
 				{
 					CommentText = i.ToString(),
-					Id = i,
+					CommentId = i,
 					PostTime = DateTime.Now,
 					Title = i + i.ToString()
 				}

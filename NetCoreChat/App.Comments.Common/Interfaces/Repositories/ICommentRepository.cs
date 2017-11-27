@@ -1,5 +1,6 @@
 ﻿using App.Comments.Common.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace App.Comments.Common.Interfaces.Repositories
 {
@@ -10,7 +11,7 @@ namespace App.Comments.Common.Interfaces.Repositories
 		void UpdateComment(Comment comment);
         void DeleteComment(Comment comment);
         Comment GetCommentByUserName(string UserName);
-        IEnumerable<Comment> GetAll();
+        IQueryable GetAll();
 		IEnumerable<Comment> GetLast50Comments();
 		void DeleteComments(IEnumerable<Comment> commentForDelete);
 		void DeleteAllComments();
