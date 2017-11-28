@@ -34,49 +34,34 @@ namespace App.Comments.Services
 		{
 			_commentRepository.DeleteAllComments();
 			var userId = _commentsContext.Users.FirstOrDefault(x => x.UserId > 0);
-			
-			Random random = new Random();
+			var insertTime = Stopwatch.StartNew();
 
-			Stopwatch insertTime = null;
-			Stopwatch selectTime = null;
-			Stopwatch updateTime = null;
-			Stopwatch deleteTime = null;
-
-			Stopwatch time = Stopwatch.StartNew();
-			for (int i = 0; i < 1000; i++)
+			Comment comment = null;
+			List<Comment> comments = new List<Comment>();
+			for (int i = 0; i < 50000; i++)
 			{
-				//insertTime = Stopwatch.StartNew();
-				Comment comment = new Comment()
+				comment = new Comment()
 				{
 					ApplicationUser = userId,
 					CommentText = $"This is test comment with number {i}",
 					PostTime = DateTime.Now,
 					Title = $"This is test Title with number {i}",
-					CommentData = new CommentData()
-					{
-						CommentDescription = $"Simple comment description data {i}",
-						Dislikes = random.Next(0, 50),
-						Likes = random.Next(0, 50)
-					}
 				};
-				_commentRepository.AddComment(comment);
-				//insertTime.Stop();
-
-				//selectTime = Stopwatch.StartNew();
-				var selectedComments = _commentRepository.GetAll();
-				//selectTime.Stop();
-
-				//updateTime = Stopwatch.StartNew();
-				comment.Title = $"Changed comment title with number {i}";
-				comment.CommentText = $"Changed comment text with number {i}";
-				_commentRepository.UpdateComment(comment);
-				//updateTime.Stop();
-
-				//deleteTime = Stopwatch.StartNew();
-				_commentRepository.DeleteComment(comment);
-				//deleteTime.Stop();
+				comments.Add(comment);
+				comment = null;
 			}
-			return TimeSpan.FromMilliseconds(time.ElapsedMilliseconds).TotalSeconds;
+			_commentRepository.AddComments(comments);
+			insertTime.Stop();
+
+			var selectTime = Stopwatch.StartNew();
+			var selectedComments = _commentRepository.GetAll();
+			selectTime.Stop();
+
+			var deleteTime = Stopwatch.StartNew();
+			_commentRepository.DeleteComments(comments);
+			deleteTime.Stop();
+
+			return TimeSpan.FromMilliseconds(selectTime.ElapsedMilliseconds).TotalSeconds;
 		}
 
 		public double FindStringInText()
@@ -93,7 +78,7 @@ namespace App.Comments.Services
 		public double ParseJsonObject()
 		{
 			List<Comment> comments = new List<Comment>();
-			for (int i = 0; i < 500000; i++)
+			for (int i = 0; i < 10000; i++)
 			{
 				comments.Add(new Comment()
 				{

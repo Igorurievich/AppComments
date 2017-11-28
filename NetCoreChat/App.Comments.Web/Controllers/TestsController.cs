@@ -15,9 +15,9 @@ namespace App.Comments.Web.Controllers
 		}
 
 		[HttpGet]
-		public double CountSQLQueriesGeneratingTime()
+		public string CountSQLQueriesGeneratingTime()
 		{
-			return _testsService.CountSQLQueriesTime();
+			return _testsService.CountSQLQueriesTime().ToString();
 		}
 
 		[HttpGet]
